@@ -35,3 +35,25 @@ export const HeroButtons = ({ text, url }: HeroButtons) => {
     </div>
   )
 }
+
+export const AppButtons = ({ text, url }: AppButtons) => {
+  return (
+    <div className='pt-4'>
+        <Link href={url}>
+            <button className='border-none bg-[#FFFFFF] font-bold px-4 py-[8px] w-auto outline-none text-[#000000] text-center text-[16px] rounded-full'>
+                 {text}
+            </button>
+        </Link>
+    </div>
+  )
+}
+
+export const ServiceButtons = ({ text, onClick, active }: { text: string, onClick: () => void, active: boolean }) => {
+  return (
+    <div className='pt-4'>
+            <button onClick={onClick} className={`border border-[#222222] font-bold px-4 py-[8px] w-auto text-[#000000] text-center text-[16px] rounded-full ${active ? 'bg-[#000000] text-white' : ''}`}>
+                 {text}
+            </button>
+    </div>
+  )
+}
