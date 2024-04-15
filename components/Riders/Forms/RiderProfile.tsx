@@ -1,25 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import FormInput from "@/components/Elements/Forms/FormInput";
 import FormWrapper from "@/components/Elements/Forms/FormWrapper";
-import { FormProvider, useForm } from 'react-hook-form';
-import { TypeOf, object, string } from 'zod';
+import { FormProvider, useForm } from "react-hook-form";
+import { TypeOf, object, string } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ClipLoader } from 'react-spinners';
-import { createRiderProfile } from '@/utils';
-import { toast } from 'react-toastify';
-
+import { ClipLoader } from "react-spinners";
+import { createRiderProfile } from "@/utils";
+import { toast } from "react-toastify";
 
 const riderProfileSchema = object({
-  location: string()
-    .min(1, "Location is required"),
-  stage: string()
-    .min(1, "Stage is required"),
-  address: string()
-    .min(1, "Address is required"),
+  location: string().min(1, "Location is required"),
+  stage: string().min(1, "Stage is required"),
+  address: string().min(1, "Address is required"),
   gender: string()
     .min(1, "Gender is required")
-    .max(1, "Gender can either be M or F")
-})
+    .max(1, "Gender can either be M or F"),
+});
 
 export type RiderProfileInput = TypeOf<typeof riderProfileSchema>;
 
@@ -28,36 +24,41 @@ type RiderProfile = {
   stage: string;
   address: string;
   gender: string;
-}
+};
 
 type RiderProfilePassedProps = {
   stepNumber: number;
   stepsCount: number;
-}
+};
 
 type RiderProfileProps = RiderProfilePassedProps & {
   updateFields: (fields: Partial<RiderProfile>) => void;
   next: () => void;
   back: () => void;
-}
+};
 
 const INITIAL_DATA: RiderProfile = {
   location: "",
   stage: "",
   address: "",
   gender: "",
-}
+};
 
-export default function RiderProfile({ stepsCount, stepNumber, updateFields, next, back }: RiderProfileProps) {
+export default function RiderProfile({
+  stepsCount,
+  stepNumber,
+  updateFields,
+  next,
+  back,
+}: RiderProfileProps) {
   const [data, setData] = useState(INITIAL_DATA);
   const [isLoading, setIsLoading] = useState(false);
 
-
   function updateData(fields: Partial<RiderProfile>) {
-    setData(prev => {
+    setData((prev) => {
       return { ...prev, ...fields };
     });
-    updateFields(fields)
+    updateFields(fields);
   }
 
   async function onSubmitHandler(values: RiderProfile) {
@@ -67,14 +68,14 @@ export default function RiderProfile({ stepsCount, stepNumber, updateFields, nex
         address: values.address,
         gender: values.gender,
         location: values.location,
-        stage: values.stage
+        stage: values.stage,
       });
       next();
     } catch (error: any) {
-      if(error&&error.error){
+      if (error && error.error) {
         toast.error(error.error);
       } else {
-        toast.error('An unknown error occurred!');
+        toast.error("An unknown error occurred!");
       }
     } finally {
       setIsLoading(false);
@@ -92,40 +93,61 @@ export default function RiderProfile({ stepsCount, stepNumber, updateFields, nex
   } = methods;
 
   const showBackButton = stepNumber && stepNumber !== 1;
-  const isLastStep = stepNumber === stepsCount
+  const isLastStep = stepNumber === stepsCount;
 
   return (
     <FormProvider {...methods}>
-      <form autoComplete='off' onSubmit={handleSubmit(onSubmitHandler)} action="" className="p-5">
+      <form
+        autoComplete="off"
+        onSubmit={handleSubmit(onSubmitHandler)}
+        action=""
+        className="p-5"
+      >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <FormInput value={data.location} type={"text"} label={"Location"}
-                    required={false} name="location"
-                    onChange={(e) => updateData({ location: e.target.value })} />
-          <FormInput value={data.stage} type={"text"} label={"Stage"}
-            required={false} name="stage"
-            onChange={(e) => updateData({ stage: e.target.value })} />
-
-          <FormInput value={data.address} type={"text"} label={"Address"}
-            name={"address"} required={false}
-            onChange={(e) => updateData({ address: e.target.value })} />
-
-          <FormInput 
-            label={"Gender"} 
-            type={"text"} 
-            name={"gender"} 
-            placeholder="M or F"
-            required={false} 
-            value={data.gender}  
-            onChange={(e) => updateData({ gender: e.target.value.toUpperCase() })}  
+          <FormInput
+            value={data.location}
+            type={"text"}
+            label={"Location"}
+            required={false}
+            name="location"
+            onChange={(e) => updateData({ location: e.target.value })}
+          />
+          <FormInput
+            value={data.stage}
+            type={"text"}
+            label={"Stage"}
+            required={false}
+            name="stage"
+            onChange={(e) => updateData({ stage: e.target.value })}
           />
 
+          <FormInput
+            value={data.address}
+            type={"text"}
+            label={"Address"}
+            name={"address"}
+            required={false}
+            onChange={(e) => updateData({ address: e.target.value })}
+          />
+
+          <FormInput
+            label={"Gender"}
+            type={"text"}
+            name={"gender"}
+            placeholder="M or F"
+            required={false}
+            value={data.gender}
+            onChange={(e) =>
+              updateData({ gender: e.target.value.toUpperCase() })
+            }
+          />
         </div>
         <div className="mt-[1rem] flex gap-[.5rem] justify-end">
           {showBackButton && (
             <button
-            type="button"
-            onClick={back}
-            className="rounded-lg border-[#FB4552] px-4 py-2 border-2 flex items-center justify-center space-x-3 hover:bg-[#FB4552]"
+              type="button"
+              onClick={back}
+              className="rounded-lg border-[#FB4552] px-4 py-2 border-2 flex items-center justify-center space-x-3 hover:bg-[#FB4552]"
             >
               Back
             </button>
@@ -140,11 +162,11 @@ export default function RiderProfile({ stepsCount, stepNumber, updateFields, nex
               disabled={isLoading}
               className="rounded-lg border-[#FB4552] px-4 py-2 border-2 flex items-center justify-center space-x-3 hover:bg-[#FB4552]"
             >
-              {isLastStep ? 'Finish' : 'Next'}
+              {isLastStep ? "Finish" : "Next"}
             </button>
           )}
         </div>
       </form>
     </FormProvider>
-  )
+  );
 }
