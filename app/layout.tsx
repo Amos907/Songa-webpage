@@ -24,6 +24,7 @@ export default function RootLayout({
           <NavBar />
           {children}
           <Analytics />
+          <Footer />
         </ToastProvider>
       </body>
     </html>

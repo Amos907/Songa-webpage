@@ -29,14 +29,14 @@ export const NavBar = () => {
   const handleClick = () => setNav(!nav);
   const pathname = usePathname();
   return (
-    <div className="sticky bg-white top-0 w-full  z-10 px-2 py-4 md:px-6 md:py-2 ">
+    <div className="sticky bg-gray-300 top-0 w-full z-10 px-2 py-2 md:px-8 md:py-0 ">
       <div>
         <div className="flex items-center justify-between">
           <div className="">
-            <figure className="h-16 w-20 md:h-24 md:w-28 relative">
+            <figure className="h-16 w-20 md:h-24 md:w-28 md:ml-6 relative">
               <Link href="/">
                 <Image
-                  src="/assets/images/songa-logo-green.png"
+                  src="/assets/icons/SONGA-red-logo.png"
                   alt="Songa Logo"
                   sizes="100vh"
                   fill

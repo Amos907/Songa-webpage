@@ -9,10 +9,10 @@ import {
 
 function Rides() {
   return (
-    <div className="p-12">
+    <div className="p-4 md:p-12">
       <div className="flex justify-center">
         <div className="flex flex-col flex-1 ">
-          <div className="p-8  md:px-0 text-lg md:text-justify text-white text-[19px]  leading-normal">
+          <div className=" text-lg md:text-justify text-white text-[19px]  leading-normal">
             <p>
               With our riders distributed everywhere,you can now request for a
               trip at a cheaper prices with convenience at best
@@ -38,10 +38,10 @@ function Rides() {
 }
 function Delivery() {
   return (
-    <div className="p-12">
+    <div className="p-4 md:p-12">
       <div className="flex justify-center">
         <div className="flex flex-col flex-1 ">
-          <div className="p-8  md:px-0 text-lg md:text-justify text-white text-[19px]  leading-normal">
+          <div className="px-0 text-lg md:text-justify text-white md:text-[19px]  md:leading-normal">
             <p>
               SONGA works with riders to ensure customer goods are delivered as
               well as being able to pick goods for our customers and deliver
@@ -77,7 +77,7 @@ const ServicesOffered = () => {
     setIsDeliveryButtonClicked(false);
   };
   return (
-    <div className="py-2 ">
+    <div className="py-2 pt-32 md:pt-4 bg-white">
       <div className="lg:pt-[50px] sm:pt-[10px] text-black text-[30px] font-bold mb-4 text-center leading-[31.2px]">
         Our Services
       </div>
@@ -93,7 +93,7 @@ const ServicesOffered = () => {
           active={isDeliveryButtonClicked}
         />
       </div>
-      <div className="bg-green m-16 rounded-[24px] lg:flex lg:flex-col lg:flex-1">
+      <div className="bg-green w-auto m-4 md:m-16 rounded-[24px] lg:flex lg:flex-col lg:flex-1">
         {isDeliveryButtonClicked ? <Delivery /> : <Rides />}
       </div>
     </div>

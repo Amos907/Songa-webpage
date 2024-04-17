@@ -19,7 +19,7 @@ const CardInfo = [
   {
     title: "Become an AI Rider",
     description:
-      "We are using 21st C technology to digitize our riders and offer quality services.",
+      "We are using 21st Century technology to digitize our riders and offer quality services.",
     image: "/assets/images/ai.png",
   },
   {
@@ -32,7 +32,7 @@ const CardInfo = [
     title: "24 hrs Services",
     description:
       "Use our ever available agent to seek boda services. We have our riders distributed all over Kenya to take care of your needs.",
-    image: "/assets/images/support1.png",
+    image: "/assets/images/support2.png",
   },
 ];
 
@@ -72,7 +72,7 @@ function SectionCard({ cardInfo }: { cardInfo: CardInfo }) {
 
 export default function AboutUs() {
   return (
-    <div className="h-[100vh]">
+    <div className="h-[100vh] ">
       <div className="relative h-full w-screen">
         <div className="w-full">
           <figure>
@@ -112,14 +112,15 @@ export default function AboutUs() {
         </div>
       </div>
 
-      <div className="w-full md:h-36 mt-4 text-center shadow-sm bg-white">
+            {/* commented out partner section -- to be uncommented later */}
+      {/* <div className="w-full md:h-36 mt-4 text-center shadow-sm bg-white">
         <div className="space-y-2 md:flex items-center md:px-16">
           <p className="text-[#A90000] text-3xl">Trusted By</p>
           {Partners.map<JSX.Element>((image: string) => (
             <PartnerImage key={image} image={image} />
           ))}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
