@@ -10,7 +10,7 @@ export default function Footer() {
       <div className='flex md:justify-between flex-col md:flex-row items-center justify-center'>
         <div>
           <Image src="/assets/icons/logo.svg" alt='logo' width={100} height={202} />
-          <p className='text-white/80'>&copy; 2023 All rights Reserved</p>
+          <p className='text-white/80'>&copy; {new Date().getFullYear()} All rights Reserved</p>
         </div>
 
         <div className='space-y-10 flex flex-col items-end'>
@@ -24,7 +24,7 @@ export default function Footer() {
               </li>
               <li className='text-white/80'>
                 <Link href="/">
-                  <div>Service</div>
+                  <div>Services</div>
                 </Link>
               </li>
               <li className='text-white/80'>
