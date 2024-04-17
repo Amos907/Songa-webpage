@@ -88,20 +88,17 @@ export default function AboutUs() {
 
         <div className="w-full h-full pt-24 md:pt-32 bg-[#f1f3f5] bg-opacity-75 absolute z-0 md:px-16 md:space-y-28">
           <div className="px-4 space-y-4 lg:w-1/3">
-            <div>
               <div className="flex space-x-2">
                 <div className="w-8 h-1.5 bg-black"></div>
                 <div className="w-8 h-1.5 bg-red-500"></div>
                 <div className="w-8 h-1.5 bg-[#00FF48]"></div>
               </div>
-            </div>
-
-            <p
-              className={`${sans_hebrew.className} tracking-normal text-[#000000] text-xl font-semibold md:text-2xl md:leading-2 md:tracking-[.0.5em]`}
-            >
-              SONGA is a learning bodaboda machine that has been trained by
-              bodaboda riders to offer services leveraging AI.
-            </p>
+              <p
+                className={`${sans_hebrew.className} tracking-normal text-[#000000] text-xl font-semibold md:text-2xl md:leading-2 `}
+              >
+                SONGA is a learning bodaboda machine that has been trained by
+                bodaboda riders to offer services leveraging AI.
+              </p>
           </div>
 
           <div className="lg:flex lg:space-x-3 mt-4 mx-3 space-y-3 lg:space-y-0">

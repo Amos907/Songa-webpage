@@ -24,7 +24,7 @@ export const Hero = () => {
               <p
                 className={`${sans_hebrew.className} tracking-normal text-[#000000] font-extrabold text-2xl md:text-3xl md:leading-2 md:tracking-[.25em]`}
               >
-                Use SONGA, <br /> to get served by a technology enabled rider
+                SONGA AI, <br /> Let&apos;s you enjoy the experience of a technology enabled rider.
               </p>
             </div>
             <div>
