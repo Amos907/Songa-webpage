@@ -7,15 +7,15 @@ interface CreateRiderData {
 
 interface CreateRiderProfile {
   location: string;
-  address: string;
+  stage_name: string;
+  town_of_operation: string;
+  job_type: string;
   gender: string;
-  // avatar: string;
-  stage: string;
 }
+
 interface BikeDetails {
   bikeType: string;
   plateNumber: string;
-  // bikePhoto: string,
-  insuranceProvider: string;
-  insurancePolicyNumber: string;
+  model: string;
+  insurance_provider: "yes" | "no";
 }
