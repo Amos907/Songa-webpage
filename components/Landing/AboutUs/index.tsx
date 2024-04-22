@@ -86,7 +86,7 @@ export default function AboutUs() {
           </figure>
         </div>
 
-        <div className="w-full h-full pt-24 md:pt-32 bg-[#f1f3f5] bg-opacity-75 absolute z-0 md:px-16 md:space-y-28">
+        <div className="w-full h-full pt-18 md:pt-24 bg-[#f1f3f5] bg-opacity-75 absolute z-0 md:px-16 md:space-y-28">
           <div className="px-4 space-y-4 lg:w-1/3">
               <div className="flex space-x-2">
                 <div className="w-8 h-1.5 bg-black"></div>
@@ -94,10 +94,10 @@ export default function AboutUs() {
                 <div className="w-8 h-1.5 bg-[#00FF48]"></div>
               </div>
               <p
-                className={`${sans_hebrew.className} tracking-normal text-[#000000] text-xl font-semibold md:text-2xl md:leading-2 `}
+                className={`${sans_hebrew.className} tracking-normal text-[#000000] text-lg font-semibold md:text-xl md:leading-normal `}
               >
-                SONGA is a learning bodaboda machine that has been trained by
-                bodaboda riders to offer services leveraging AI.
+                SONGA is a bodaboda rider&apos;s Smart App that gives him a digital experience.
+                In the technology of 21 Century , we aim to leverage what we know incorporating AI to improve service delivery.
               </p>
           </div>
 
