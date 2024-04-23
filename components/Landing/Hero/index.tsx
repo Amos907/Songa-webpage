@@ -7,14 +7,24 @@ import { HeroButtons } from "@/components/Elements/Buttons/buttons";
 export const Hero = () => {
   return (
     <div className="h-screen w-full">
+      {/* mobile view background */}
+      <div className="w-full md:hidden ">
+        <Image
+          src="/assets/images/hero-bg-new.jpg"
+          alt="boba boda riders"
+          sizes="100vh"
+          fill
+          className="object-cover md:object-fill"
+        />
+      </div>
       <div className="w-full md:flex md:flex-row md:items-start">
         {/* Left Side */}
-        <div className="w-1/2 h-full pt-20  md:flex flex-col md:justify-center md:items-center  ">
+        <div className="w-full h-full pt-20  md:w-1/2 md:flex flex-col md:justify-center md:items-center  ">
         <div className=" w-full">
-          <div className="text-white px-6 md:px-16 space-y-20 md:space-y-16 ">
+          <div className="text-white text-center md:text-left px-6 md:px-16 space-y-20 md:space-y-16 ">
             <div>
               <p
-                className={`${sans_hebrew.className} tracking-normal text-[#000000] font-extrabold text-2xl md:text-4xl md:leading-2 md:tracking-[.25em]`}
+                className={`${sans_hebrew.className} tracking-normal md:text-[#000000] font-extrabold text-2xl md:text-4xl md:leading-2 md:tracking-[.25em]`}
               >
                 A DIGITAL <br/> <br /> RIDER <br /> <br /> EXPERIENCE.
               </p>
@@ -86,9 +96,10 @@ export const Hero = () => {
               <div className="absolute inset-0 bg-[#f1f3f5] bg-opacity-50 rounded-md"></div>
             </div>
           </div>
-      </div>
 
-      
+          {/* mobile view */}
+
+      </div>
     </div>
   );
 };
