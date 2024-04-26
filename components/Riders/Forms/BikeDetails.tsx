@@ -12,8 +12,8 @@ import { toast } from 'react-toastify';
 type RiderDetails = {
   bike_type: string;
   plate_no: string;
+  model: string;
   insurance_provider?: string;
-  insurance_policy_no?: string;
 }
 
 type BikeDetailsPassedProps = {
@@ -30,8 +30,8 @@ type RiderDetailsProps = BikeDetailsPassedProps & {
 const INITIAL_DATA: RiderDetails = {
   bike_type: "",
   plate_no: "",
-  insurance_provider: "",
-  insurance_policy_no: "",
+  model: "",
+  insurance_provider: ""
 }
 
 const bikeDetailsSchema = object({
@@ -39,7 +39,11 @@ const bikeDetailsSchema = object({
     .min(2, "Bike type is required"),
   plate_no: string()
     .min(1, "Plate Number is required")
-    .min(5, "A valid Plate Number is required")
+    .min(5, "A valid Plate Number is required"),
+  model: string()
+    .min(1, "Plate Number is required"),
+  insurance_provider: string()
+    .min(1, "Plate Number is required")
   // insurance_provider: string()
   //   .min(2, "Insurance Provider is required"),
   // insurance_policy_no: string()
@@ -65,9 +69,9 @@ export default function BikeDetails({ stepsCount, stepNumber, next, back, update
       setIsLoading(true);
       await createBikeDetails({
         bikeType: data.bike_type,
-        insurancePolicyNumber: data.insurance_policy_no||"",
-        insuranceProvider: data.insurance_provider||"",
-        plateNumber: data.plate_no
+        plateNumber: data.plate_no,
+        model: data.model,
+        insuranceProvider: data.insurance_provider||""
       });
       next();
     } catch (error: any) {
@@ -114,19 +118,19 @@ export default function BikeDetails({ stepsCount, stepNumber, next, back, update
             name='plate_no'
             required
           />
+           <FormInput
+            label='Model'
+            value={data.model||""}
+            onChange={e => updateData({ model: e.target.value })}
+            name='model'
+            type='text'
+            required={false}
+          />
           <FormInput
             label='Insuarance Provider'
             value={data.insurance_provider||""}
             onChange={e => updateData({ insurance_provider: e.target.value })}
             name='insuarance_provider'
-            type='text'
-            required={false}
-          />
-          <FormInput
-            label='Insuarance Policy Number'
-            value={data.insurance_policy_no||""}
-            onChange={e => updateData({ insurance_policy_no: e.target.value })}
-            name='insuarance_policy_no'
             type='text'
             required={false}
           />

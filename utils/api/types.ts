@@ -1,8 +1,9 @@
 interface CreateRiderData {
   first_name: string;
   last_name: string;
-  phone: string;
+  phone_no: string;
   password: string;
+  confirmPassword: string;
 }
 
 interface CreateRiderProfile {
@@ -11,11 +12,12 @@ interface CreateRiderProfile {
   town_of_operation: string;
   job_type: string;
   gender: string;
+  rider: string;
 }
 
 interface BikeDetails {
   bikeType: string;
   plateNumber: string;
   model: string;
-  insurance_provider: "yes" | "no";
+  insuranceProvider: string;
 }

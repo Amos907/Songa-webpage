@@ -103,8 +103,9 @@ export default function RiderDetails({ stepsCount, stepNumber, updateFields, nex
       await createRiderAccount({
         first_name: data.first_name,
         last_name: data.last_name,
-        phone: `+${data.phone_no}`,
-        password: data.password
+        phone_no: data.phone_no,
+        password: data.password,
+        confirmPassword: data.confirmPassword
       });
       next();
     } catch (error: any) {
@@ -141,8 +142,9 @@ export default function RiderDetails({ stepsCount, stepNumber, updateFields, nex
           <FormInput value={data.first_name} onChange={(e) => updateData({ first_name: e.target.value })} label="First Name" type="text" name="first_name" />
           <FormInput value={data.last_name} onChange={(e) => updateData({ last_name: e.target.value })} label="Last Name" name="last_name" type="text" />
           <FormInput value={data.password} onChange={(e) => updateData({ password: e.target.value })} label="Password" name="password" type="password" />
+          <FormInput value={data.phone_no} onChange={(e) => updateData({ phone_no: e.target.value })} label="Phone Number" name="phone_no" type="tel" />
           <FormInput value={data.confirmPassword} onChange={(e) => updateData({ confirmPassword: e.target.value })} label="Confirm Password" name="confirmPassword" type="password" />
-          <CustomPhoneInput name="phone_no" defaultValue={phone} handlePhoneChange={handlePhoneChange}/>
+          {/* <CustomPhoneInput name="phone_no" defaultValue={phone} handlePhoneChange={handlePhoneChange}/> */}
           <div className="flex flex-col gap-1">
             {/* <div className='flex justify-between items-center'>
               {showOTP && (
