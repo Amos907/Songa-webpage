@@ -3,7 +3,8 @@ import Image from 'next/image';
 import { useFormContext } from 'react-hook-form';
 
 
-function ImageUploader({name, require, onImageUpload }: { onImageUpload: (imageData: File) => void , require: boolean, name?: string }) {
+function ImageUploader({name, require, onImageUpload }: 
+  { onImageUpload: (imageData: File) => void , require?: boolean, name?: string }) {
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
 
   const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
@@ -11,9 +12,14 @@ function ImageUploader({name, require, onImageUpload }: { onImageUpload: (imageD
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
+        console.log("Selected file:", file);
         const imageData = reader.result as string; // Cast the result to string
+        // console.log("The img data: ", imageData)
         setSelectedImages((prevImages) => [...prevImages, imageData]);
         onImageUpload(file);
+      };
+      reader.onerror = () => {
+        console.error('Error reading file');
       };
       reader.readAsDataURL(file);
     }
@@ -43,7 +49,7 @@ function ImageUploader({name, require, onImageUpload }: { onImageUpload: (imageD
       </div>
       {errors[name||""] && (
           <span className='text-red-500 text-xs pt-1 block'>
-          {errors[name||""]?.message as string}
+          {errors[name||""]?.message as string} 
           </span>
       )}
     </div>

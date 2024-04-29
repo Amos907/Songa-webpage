@@ -46,11 +46,11 @@ export async function createRiderAccount(
     // const sessionToken = response.data.rider.sessionToken;
     // const userId = response.data.rider.id;
     const riderId = response.data.id
- 
+    console.log(typeof riderId)
     // localStorage.setItem("sessionToken", sessionToken);
     // localStorage.setItem("userId", userId);
     localStorage.setItem("riderId", riderId.toString());
-    console.log(riderId)
+    console.log(typeof riderId)
     return response;
   }
   
@@ -122,14 +122,19 @@ export async function createBikeDetails(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("sessionToken")}`,
+      // Authorization: `Bearer ${localStorage.getItem("sessionToken")}`,
+      Authorization: `Bearer ${localStorage.getItem("riderId")}`,
     },
     data: data,
   };
 
   try {
     const response = await axios(endpoint, requestOptions);
-    toast.success(response.data.message);
+    // toast.success(response.data.message);
+    if (response.status === 201) {
+      // Show success toast if status is 201
+      toast.success('Bike details registered successfully!');
+    }
     return response;
   } catch (e: any) {
     if (e.response && e.response.data && e.response.data.message) {
@@ -152,9 +157,8 @@ export async function uploadDocuments(
     method: "POST",
     maxBodyLength: Infinity,
     headers: {
-      // "Content-Type": "multipart/form-data", // Important for file uploads
+      "Content-Type": "multipart/form-data", // Important for file uploads
       // Authorization: `Bearer ${localStorage.getItem("sessionToken")}`, // Attach the session token to the request
-      "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("riderId")}`,
     },
     data: files,

@@ -23,17 +23,19 @@ type FormData = {
   confirmPassword: string;
   phone_no: string;
   location: string;
-  stage: string;
-  address: string;
+  stage_name: string;
+  town_of_operation: string;
+  job_type: string;
   gender: string;
   ID_front: any;
   ID_back: any;
   license_front: any;
   license_back: any;
-  bike_type: string;
+  type: string;
   plate_no: string;
+  ev_model: string;
+  fuel_model: string;
   insurance_provider: string;
-  insurance_policy_no: string;
 };
 
 const INITIAL_DATA: FormData = {
@@ -43,17 +45,19 @@ const INITIAL_DATA: FormData = {
   confirmPassword: '',
   phone_no: '',
   location: '',
-  stage: '',
-  address: '',
+  stage_name: '',
+  town_of_operation: '',
+  job_type: '',
   gender: '',
   ID_front: '',
   ID_back: '',
   license_front: '',
   license_back: '',
-  bike_type: '',
+  type: '',
   plate_no: '',
+  ev_model: '',
+  fuel_model: '',
   insurance_provider: '',
-  insurance_policy_no: '',
 };
 
 
@@ -65,7 +69,7 @@ export default function RegistrationForm() {
     { component: <RiderProfile stepsCount={5} stepNumber={2} next={goToNext} back={goBack} updateFields={updateFields} />, step: { number: 2, label: 'Profile' } },
     { component: <Upload stepsCount={5} stepNumber={3} next={goToNext} back={goBack}  updateFields={updateFields} />, step: { number: 3, label: 'Upload' } },
     { component: <BikeDetails stepsCount={5} stepNumber={4} next={goToNext} back={goBack} updateFields={updateFields} />, step: { number: 4, label: 'Bike Details' } },
-    { component: <Preview {...data} stepsCount={5} stepNumber={3} next={goToNext} back={goBack} updateFields={updateFields} />, step: { number: 5, label: 'Preview' } },
+    { component: <Preview {...data} stepsCount={5} stepNumber={5} next={goToNext} back={goBack} updateFields={updateFields} />, step: { number: 5, label: 'Preview' } },
   ]);
 
   const showBackButton = !isFirstStep && currentStepIndex !== 0;

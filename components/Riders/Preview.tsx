@@ -15,10 +15,9 @@ type RiderDetails = {
   ID_back: any;
   license_front: any;
   license_back: any;
-  bike_type: string;
+  type: string;
   plate_no: string;
   insurance_provider: string;
-  insurance_policy_no: string;
 };
 
 type RiderDetailsProps = RiderDetails & {
@@ -79,7 +78,7 @@ export default function Preview({ stepNumber, stepsCount, back, next, ...riderDe
           <div className="mb-8">
             <h1 className="mb-2 text-lg font-semibold">Bike Information</h1>
             <div>
-              <p className="mb-2">Bike Type: {riderDetails.bike_type}</p>
+              <p className="mb-2">Bike Type: {riderDetails.type}</p>
               <p className="mb-2">Plate Number: {riderDetails.plate_no}</p>
             </div>
           </div>
@@ -88,7 +87,7 @@ export default function Preview({ stepNumber, stepsCount, back, next, ...riderDe
             <h1 className="mb-2 text-lg font-semibold">Insurance Information</h1>
             <div>
               <p className="mb-2">Insurance Provider: {riderDetails.insurance_provider}</p>
-              <p className="mb-2">Insurance Policy Number: {riderDetails.insurance_policy_no}</p>
+              {/* <p className="mb-2">Insurance Policy Number: {riderDetails.insurance_policy_no}</p> */}
             </div>
           </div>
         </div>

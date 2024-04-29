@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import FormInput from '../../Elements/Forms/FormInput'
 import FormWrapper from '../../Elements/Forms/FormWrapper'
 import { FormProvider, useForm } from 'react-hook-form';
@@ -8,12 +8,27 @@ import { ClipLoader } from 'react-spinners';
 import { createBikeDetails, createRiderAccount } from '@/utils';
 import { toast } from 'react-toastify';
 
+const bikeDetailsSchema = object({
+  type: string()
+    .min(2, "Bike type is required"),
+  plate_no: string()
+    .min(1, "Plate Number is required")
+    .min(5, "A valid Plate Number is required"),
+  ev_model: string(),
+  fuel_model: string(),
+  insurance_provider: string(),
+  rider: string(),
+})
 
-type RiderDetails = {
-  bike_type: string;
+export type BikeDetailsInput = TypeOf<typeof bikeDetailsSchema>;
+
+type BikeDetails = {
+  type: string;
+  ev_model: string;
+  fuel_model: string;
   plate_no: string;
-  model: string;
-  insurance_provider?: string;
+  insurance_provider: string;
+  rider: string;
 }
 
 type BikeDetailsPassedProps = {
@@ -21,59 +36,69 @@ type BikeDetailsPassedProps = {
   stepsCount: number;
 }
 
-type RiderDetailsProps = BikeDetailsPassedProps & {
-  updateFields: (fields: Partial<RiderDetails>) => void;
+type BikeDetailsProps = BikeDetailsPassedProps & {
+  updateFields: (fields: Partial<BikeDetails>) => void;
   next: () => void;
   back: () => void;
 }
 
-const INITIAL_DATA: RiderDetails = {
-  bike_type: "",
-  plate_no: "",
-  model: "",
-  insurance_provider: ""
+// retrieve riderId from local storage
+let riderId = localStorage.getItem("riderId");
+if (!riderId) {
+  console.error("Rider ID not found in local storage");
+  riderId = "default"; // Set a default value or error message
 }
 
-const bikeDetailsSchema = object({
-  bike_type: string()
-    .min(2, "Bike type is required"),
-  plate_no: string()
-    .min(1, "Plate Number is required")
-    .min(5, "A valid Plate Number is required"),
-  model: string()
-    .min(1, "Plate Number is required"),
-  insurance_provider: string()
-    .min(1, "Plate Number is required")
-  // insurance_provider: string()
-  //   .min(2, "Insurance Provider is required"),
-  // insurance_policy_no: string()
-  //   .min(1, "Insurance policy number is required")
-})
+const INITIAL_DATA: BikeDetails = {
+  type: "",
+  ev_model: "",
+  fuel_model: "",
+  plate_no: "",
+  insurance_provider: "",
+  rider: riderId,
+}
 
-export type BikeDetailsInput = TypeOf<typeof bikeDetailsSchema>;
-
-export default function BikeDetails({ stepsCount, stepNumber, next, back, updateFields }: RiderDetailsProps) {
+export default function BikeDetails({ 
+  stepsCount, 
+  stepNumber, 
+  next, 
+  back, 
+  updateFields }: BikeDetailsProps) {
 
   const [data, setData] = useState(INITIAL_DATA);
   const [isLoading, setIsLoading] = useState(false);
 
-  function updateData(fields: Partial<RiderDetails>) {
+    // check if the state of the forms input is being updated
+  useEffect(() => {
+    console.log("Form data:", data);
+  }, [data]);
+
+  function updateData(fields: Partial<BikeDetails>) {
     setData(prev => {
       return { ...prev, ...fields };
     });
-    updateFields(fields)
-  }
+     // Only call updateFields if the rider field is not included in the fields object
+     if (!fields.hasOwnProperty('rider') && fields.rider !== undefined) {
+      updateFields(fields);
+     }
+    }
 
-  async function onSubmitHandler(data: RiderDetails) {
+  async function onSubmitHandler(data: BikeDetails) {
     try {
       setIsLoading(true);
-      await createBikeDetails({
-        bikeType: data.bike_type,
-        plateNumber: data.plate_no,
-        model: data.model,
-        insuranceProvider: data.insurance_provider||""
-      });
-      next();
+      console.log("Submitting form....")
+      // const isValid = await methods.trigger(); // Trigger form validation
+      
+        await createBikeDetails({
+          type: data.type,
+          plate_no: data.plate_no,
+          ev_model: data.ev_model || null,
+          fuel_model: data.fuel_model || null,
+          insurance_provider: data.insurance_provider,
+          rider: data.rider
+        });
+        console.log("Form submitted successfully")
+        next();
     } catch (error: any) {
       if(error&&error.error){
         toast.error(error.error);
@@ -97,42 +122,91 @@ export default function BikeDetails({ stepsCount, stepNumber, next, back, update
 
   const showBackButton = stepNumber && stepNumber !== 1;
   const isLastStep = stepNumber === stepsCount
+  
 
   return (
     <FormProvider {...methods}>
       <form autoComplete='off' onSubmit={handleSubmit(onSubmitHandler)} action="" className="p-5">
         <FormWrapper title=''>
           <FormInput
-            label='Type of Bike'
-            value={data.bike_type}
-            onChange={e => updateData({ bike_type: e.target.value })}
-            type='text'
+            label='Make of Bike'
+            type='select'
             name='bike_type'
+            placeholder='Select your bike type'
             required
+            value={data.type}
+            options={[
+              { value: "EV", label: "EV" },
+              { value: "FUEL", label: "Fuel" },
+            ]}
+            onChange={e => updateData({ type: e.target.value })}
+            
           />
+        {data.type === "EV" && (
           <FormInput
-            label='Plate Number'
+            label='EV Model'
+            value={data.ev_model || ""}
+            name='model'
+            placeholder='Choose EV bike model name:'
+            type='select'
+            required={false}
+            options={[
+                { value: "Ampersand", label: "AMPERSAND" },
+                { value: "ENZI", label: "Enzi" },
+                { value: "ARC", label: "Arc" },
+                { value: "ROAM", label: "Roam" },
+                { value: "GREEN", label: "Green" },
+            ]}
+            onChange={e => updateData({ ev_model: e.target.value })}
+        />
+    )}
+    {data.type === "FUEL" && (
+        <FormInput
+            label='Fuel Model'
+            value={data.fuel_model || ""}
+            name='model'
+            placeholder='Choose Fuel bike model name:'
+            type='select'
+            required={false}
+            options={[
+                { value: "BOXER", label: "Boxer" },
+                { value: "TVS", label: "Enzi" },
+                { value: "HONDA", label: "Arc" },
+                { value: "HAOJUE", label: "Haojue" },
+                { value: "HERO", label: "Hero" },
+                { value: "CAPTAIN", label: "Captain" },
+                { value: "EVERLAST", label: "Everlast" },
+                { value: "SONLINK", label: "Sonlink" },
+            ]}
+            onChange={e => updateData({ fuel_model: e.target.value })}
+        />
+      )}
+          <FormInput
+            label='License Plate Number'
             value={data.plate_no}
-            onChange={e => updateData({ plate_no: e.target.value })}
             type='text'
             name='plate_no'
             required
-          />
-           <FormInput
-            label='Model'
-            value={data.model||""}
-            onChange={e => updateData({ model: e.target.value })}
-            name='model'
-            type='text'
-            required={false}
+            onChange={e => updateData({ plate_no: e.target.value })}
           />
           <FormInput
-            label='Insuarance Provider'
-            value={data.insurance_provider||""}
+            label='Insurance Provider'
+            value={data.insurance_provider}
+            name='insurance_provider'
+            placeholder='Do you have an insurance provider?'
+            type='select'
+            required
+            options={[
+              { value: "yes", label: "Yes" },
+              { value: "no", label: "No" },
+            ]}
             onChange={e => updateData({ insurance_provider: e.target.value })}
-            name='insuarance_provider'
-            type='text'
-            required={false}
+          />
+           {/* Hidden rider input */}
+           <FormInput
+            type={"hidden"}
+            name={"rider"}
+            value={data.rider}
           />
         </FormWrapper>
         <div className="mt-[1rem] flex gap-[.5rem] justify-end">

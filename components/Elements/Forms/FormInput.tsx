@@ -11,7 +11,7 @@ type FormInputProps = {
     type: string
     name: string
     required?: boolean
-    value: string | number
+    value: string | undefined
     placeholder?: string
     onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void
     options?: Option[] // Array of options for select type

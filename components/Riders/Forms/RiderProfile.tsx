@@ -7,7 +7,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ClipLoader } from "react-spinners";
 import { createRiderProfile } from "@/utils";
 import { toast } from "react-toastify";
-import { array } from "prop-types";
 
 
 const riderProfileSchema = object({
@@ -41,13 +40,19 @@ type RiderProfileProps = RiderProfilePassedProps & {
   back: () => void;
 };
 
+let riderId = localStorage.getItem("riderId");
+if (!riderId) {
+  console.error("Rider ID not found in local storage");
+  riderId = "default"; // Set a default value or error message
+}
+
 const INITIAL_DATA: RiderProfile = {
   location: "",
   stage_name: "",
   town_of_operation: "",
   job_type: "",
   gender: "",
-  rider: ""
+  rider: riderId,
 };
 
 export default function RiderProfile({
@@ -60,28 +65,35 @@ export default function RiderProfile({
   const [data, setData] = useState(INITIAL_DATA);
   const [isLoading, setIsLoading] = useState(false);
 
-  // retrieve riderId from local storage
-  useEffect(() => {
-    const riderId = localStorage.getItem("riderId");
-    console.log(riderId)
-    if ((riderId) ) {
-      setData((prevData) => ({
-        ...prevData,
-        rider: riderId,
-      }));
-    }
-  }, []);
-
+  //  // retrieve riderId from local storage ---- remove this bit before pushing
+  //  useEffect(() => {
+  //   const riderId = localStorage.getItem("riderId");
+  //   // console.log(riderId)
+  //   if ((riderId) ) {
+  //     setData((prevData) => ({
+  //       ...prevData,
+  //       rider: riderId.toString(),
+  //     }));
+  //     // console.log("Data rider:", riderId);
+  //     // console.log(typeof riderId)
+  //   }
+  // }, []);
+  
 
   function updateData(fields: Partial<RiderProfile>) {
     setData((prev) => {
       return { ...prev, ...fields };
     });
-    updateFields(fields);
+    // Only call updateFields if the rider field is not included in the fields object
+    if (!fields.hasOwnProperty('rider') && fields.rider !== undefined) {
+      updateFields(fields);
+    }
   }
+
 
   async function onSubmitHandler(values: RiderProfile) {
     try {
+      // console.log("Data before submitting:", values);
       setIsLoading(true);
       await createRiderProfile({
         location: values.location,
@@ -184,10 +196,9 @@ export default function RiderProfile({
 
           {/* Hidden rider input */}
           <FormInput
-            type={"number"}
+            type={"hidden"}
             name={"rider"}
             value={data.rider}
-            
           />
         </div>
         <div className="mt-[1rem] flex gap-[.5rem] justify-end">
