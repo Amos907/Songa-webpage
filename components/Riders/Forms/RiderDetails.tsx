@@ -13,6 +13,8 @@ import { ClipLoader } from 'react-spinners';
 import CustomPhoneInput from '@/components/Elements/Forms/PhoneInput';
 import { createRiderAccount } from '@/utils';
 import { toast } from 'react-toastify';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 type RiderDetails = {
   first_name: string;
@@ -71,6 +73,7 @@ export default function RiderDetails({ stepsCount, stepNumber, updateFields, nex
   const [data, setData] = useState(INITIAL_DATA);
   const [isLoading, setIsLoading] = useState(false);
   const [phone, setPhone] = useState(data.phone_no);
+  const [showPassword, setShowPassword] = useState(false);
 
   function updateData(fields: Partial<RiderDetails>) {
     setData(prev => {
@@ -141,12 +144,30 @@ export default function RiderDetails({ stepsCount, stepNumber, updateFields, nex
         <FormWrapper title="">
           <FormInput value={data.first_name} onChange={(e) => updateData({ first_name: e.target.value })} label="First Name" type="text" name="first_name" />
           <FormInput value={data.last_name} onChange={(e) => updateData({ last_name: e.target.value })} label="Last Name" name="last_name" type="text" />
-          <FormInput value={data.password} onChange={(e) => updateData({ password: e.target.value })} label="Password" name="password" type="password" />
-          <FormInput value={data.phone_no} onChange={(e) => updateData({ phone_no: e.target.value })} label="Phone Number" name="phone_no" type="tel" />
-          <FormInput value={data.confirmPassword} onChange={(e) => updateData({ confirmPassword: e.target.value })} label="Confirm Password" name="confirmPassword" type="password" />
-          {/* <CustomPhoneInput name="phone_no" defaultValue={phone} handlePhoneChange={handlePhoneChange}/> */}
-          <div className="flex flex-col gap-1">
-            {/* <div className='flex justify-between items-center'>
+          <div style={{ position: 'relative' }}>
+            <FormInput value={data.password} onChange={(e) => updateData({ password: e.target.value })} label="Password" name="password" 
+              type={showPassword ? "text" : "password"} 
+            />
+            {/* SHOW PASSWORD ICON */}
+            <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} 
+              style={{ position: 'absolute', top: '70%', right: '10px', transform: 'translateY(-50%)', cursor: 'pointer', zIndex: '1' }} 
+              onClick={() => setShowPassword(!showPassword)} 
+            />
+          </div>
+          <div style={{position: 'relative'}}>
+            <FormInput value={data.confirmPassword} onChange={(e) => updateData({ confirmPassword: e.target.value })} label="Confirm Password" name="confirmPassword" 
+              type={showPassword ? "text" : "password"} />
+              {/* SHOW PASSWORD ICON */}
+            <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} 
+              style={{ position: 'absolute', top: '70%', right: '10px', transform: 'translateY(-50%)', cursor: 'pointer', zIndex: '1' }} 
+              onClick={() => setShowPassword(!showPassword)} 
+            />
+          </div>
+          <CustomPhoneInput name="phone_no" defaultValue={phone} handlePhoneChange={handlePhoneChange}/>
+
+          {/* OTP FEATURE TO BE RELEASE LATER ----- PLEASE DO NOT DELETE THE COMMENTED OUT CODE */}
+          {/* <div className="flex flex-col gap-1">
+            <div className='flex justify-between items-center'>
               {showOTP && (
                 <>
                   <OTPInput
@@ -166,8 +187,8 @@ export default function RiderDetails({ stepsCount, stepNumber, updateFields, nex
                   Verify
                 </button>
               </div>
-            </div> */}
-          </div>
+            </div>
+          </div> */}
         </FormWrapper>
        <div className="mt-[1rem] flex gap-[.5rem] justify-end">
        {showBackButton && (

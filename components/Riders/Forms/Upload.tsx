@@ -96,6 +96,7 @@ export default function Upload({ stepsCount, stepNumber, updateFields, next, bac
     if (idFrontImage) {
       const reader = new FileReader();
       reader.onload = () => {
+        console.log("Data URL of ID Front Image:", reader.result);
         setIdFrontImageUrl(reader.result as string);
       };
       reader.readAsDataURL(idFrontImage);
@@ -140,19 +141,19 @@ export default function Upload({ stepsCount, stepNumber, updateFields, next, bac
 
       const formData = new FormData();
       if(data.ID_front){
-        formData.append('images', data.ID_front);
+        formData.append('uploads/', data.ID_front);
       }
       if(data.ID_back){
-        formData.append('images', data.ID_back);
+        formData.append('uploads/', data.ID_back);
       }
       if(data.license_front) {
-        formData.append('images', data.license_front);
+        formData.append('uploads/', data.license_front);
       }
       if(data.license_back){
-        formData.append('images', data.license_back);
+        formData.append('uploads/', data.license_back);
       }
       if(data.insurance){
-        formData.append('images', data.insurance);
+        formData.append('uploads/', data.insurance);
       }
      
       
@@ -198,7 +199,7 @@ export default function Upload({ stepsCount, stepNumber, updateFields, next, bac
             {idFrontImage ? (
               <Image src={idFrontImageUrl} alt="ID Front" width={100} height={100} />
             ) : (
-              <ImageUploader name="ID_front" require={true} onImageUpload={(file) => handleImageUpload(file, 'ID_front', setIdFrontImage, setIdFrontImageUrl)} />
+              <ImageUploader name="" require={true} onImageUpload={(file) => handleImageUpload(file, 'ID_front', setIdFrontImage, setIdFrontImageUrl)} />
             )}
             <span className='whitespace-nowrap'><i className='text-[#FB4552]'>*</i> ID front: {data.ID_front?.name}</span>
             

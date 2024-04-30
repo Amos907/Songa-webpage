@@ -16,7 +16,7 @@ function ImageUploader({name, require, onImageUpload }:
         const imageData = reader.result as string; // Cast the result to string
         // console.log("The img data: ", imageData)
         setSelectedImages((prevImages) => [...prevImages, imageData]);
-        onImageUpload(file);
+        onImageUpload(file); // Pass the file object to the parent component
       };
       reader.onerror = () => {
         console.error('Error reading file');

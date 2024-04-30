@@ -58,10 +58,10 @@ export async function createRiderAccount(
     if (
       e.response &&
       e.response.data &&
-      e.response.data.message === "Forbidden. Rider already exists"
+      e.response.data.message === "Passwords do not match."
     ) {
       // Show a custom toast message for "rider exists" error
-      // toast.error('The rider already exists. Please use a different phone no.');
+      toast.error('Passwords do not match.');
       throw {
         error: "The rider already exists. Please use a different phone no.",
       };
