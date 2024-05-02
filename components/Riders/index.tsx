@@ -27,14 +27,15 @@ type FormData = {
   town_of_operation: string;
   job_type: string;
   gender: string;
+  rider: any;
   ID_front: any;
   ID_back: any;
   license_front: any;
   license_back: any;
   type: string;
   plate_no: string;
-  ev_model: string;
-  fuel_model: string;
+  ev_model: string | null;
+  fuel_model: string | null;
   insurance_provider: string;
 };
 
@@ -49,6 +50,7 @@ const INITIAL_DATA: FormData = {
   town_of_operation: '',
   job_type: '',
   gender: '',
+  rider: '',
   ID_front: '',
   ID_back: '',
   license_front: '',

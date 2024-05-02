@@ -14,7 +14,7 @@ function ImageUploader({name, require, onImageUpload }:
       reader.onload = () => {
         console.log("Selected file:", file);
         const imageData = reader.result as string; // Cast the result to string
-        // console.log("The img data: ", imageData)
+        console.log("The img data: ", typeof(imageData))
         setSelectedImages((prevImages) => [...prevImages, imageData]);
         onImageUpload(file); // Pass the file object to the parent component
       };
@@ -55,5 +55,6 @@ function ImageUploader({name, require, onImageUpload }:
     </div>
   );
 }
+
 
 export default ImageUploader;

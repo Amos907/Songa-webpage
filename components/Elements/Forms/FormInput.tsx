@@ -15,9 +15,10 @@ type FormInputProps = {
     placeholder?: string
     onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void
     options?: Option[] // Array of options for select type
+    disabled?: boolean;
 }
 
-export default function FormInput({ label, type, name, required, value, placeholder, onChange, options }: FormInputProps) {
+export default function FormInput({ label, type, name, required, value, placeholder, onChange, options, disabled }: FormInputProps) {
     const {
       register,
       formState: { errors },
@@ -35,7 +36,7 @@ export default function FormInput({ label, type, name, required, value, placehol
                         ))}
                     </select>
                 ) : (
-                    <input placeholder={placeholder} value={value} type={type} {...register(name)} required={required} onChange={onChange} className='bg-transparent border-[#FB4552] border-[1px] h-12 rounded-lg px-4' />
+                    <input placeholder={placeholder} value={value} type={type} {...register(name)} required={required} onChange={onChange} disabled={disabled} className='bg-transparent border-[#FB4552] border-[1px] h-12 rounded-lg px-4' />
                 )}
                 
             </div>

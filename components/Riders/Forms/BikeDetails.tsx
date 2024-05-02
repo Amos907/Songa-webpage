@@ -23,12 +23,12 @@ const bikeDetailsSchema = object({
 export type BikeDetailsInput = TypeOf<typeof bikeDetailsSchema>;
 
 type BikeDetails = {
-  type: string;
-  ev_model: string;
-  fuel_model: string;
+  type: string,
+  ev_model: string,
+  fuel_model: string,
   plate_no: string;
-  insurance_provider: string;
-  rider: string;
+  insurance_provider: string,
+  rider: string,
 }
 
 type BikeDetailsPassedProps = {
@@ -73,6 +73,8 @@ export default function BikeDetails({
     console.log("Form data:", data);
   }, [data]);
 
+  
+
   function updateData(fields: Partial<BikeDetails>) {
     setData(prev => {
       return { ...prev, ...fields };
@@ -83,22 +85,18 @@ export default function BikeDetails({
      }
     }
 
-  async function onSubmitHandler(data: BikeDetails) {
+  async function onSubmitHandler(values: BikeDetails) {
     try {
       setIsLoading(true);
-      console.log("Submitting form....")
-      // const isValid = await methods.trigger(); // Trigger form validation
-      
-        await createBikeDetails({
-          type: data.type,
-          plate_no: data.plate_no,
-          ev_model: data.ev_model || null,
-          fuel_model: data.fuel_model || null,
-          insurance_provider: data.insurance_provider,
-          rider: data.rider
-        });
-        console.log("Form submitted successfully")
-        next();
+      await createBikeDetails({
+        type: values.type,
+        plate_no: values.plate_no,
+        ev_model: values.ev_model ,
+        fuel_model: values.fuel_model ,
+        insurance_provider: values.insurance_provider,
+        rider: values.rider
+      });
+      next();
     } catch (error: any) {
       if(error&&error.error){
         toast.error(error.error);
@@ -131,7 +129,7 @@ export default function BikeDetails({
           <FormInput
             label='Make of Bike'
             type='select'
-            name='bike_type'
+            name='type'
             placeholder='Select your bike type'
             required
             value={data.type}
@@ -142,29 +140,30 @@ export default function BikeDetails({
             onChange={e => updateData({ type: e.target.value })}
             
           />
-        {data.type === "EV" && (
+       
           <FormInput
             label='EV Model'
-            value={data.ev_model || ""}
-            name='model'
+            value={data.ev_model}
+            name='ev_model'
             placeholder='Choose EV bike model name:'
             type='select'
             required={false}
             options={[
-                { value: "Ampersand", label: "AMPERSAND" },
+                { value: "AMPERSAND", label: "Ampersand" },
                 { value: "ENZI", label: "Enzi" },
                 { value: "ARC", label: "Arc" },
                 { value: "ROAM", label: "Roam" },
                 { value: "GREEN", label: "Green" },
             ]}
             onChange={e => updateData({ ev_model: e.target.value })}
+            disabled={data.type !== "EV"}
         />
-    )}
-    {data.type === "FUEL" && (
+    
+    
         <FormInput
             label='Fuel Model'
-            value={data.fuel_model || ""}
-            name='model'
+            value={data.fuel_model}
+            name='fuel_model'
             placeholder='Choose Fuel bike model name:'
             type='select'
             required={false}
@@ -179,8 +178,9 @@ export default function BikeDetails({
                 { value: "SONLINK", label: "Sonlink" },
             ]}
             onChange={e => updateData({ fuel_model: e.target.value })}
+            disabled={data.type !== "FUEL"}
         />
-      )}
+      
           <FormInput
             label='License Plate Number'
             value={data.plate_no}
@@ -226,6 +226,7 @@ export default function BikeDetails({
           ) : (
             <button
               type="submit"
+              // onClick={next}
               disabled={isLoading}
               className="rounded-lg border-[#FB4552] px-4 py-2 border-2 flex items-center justify-center space-x-3 hover:bg-[#FB4552]"
             >

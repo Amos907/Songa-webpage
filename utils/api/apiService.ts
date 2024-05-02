@@ -111,7 +111,7 @@ export async function createRiderProfile(
 }
 
 export async function createBikeDetails(
-  data: BikeDetails
+  data: CreateBikeData
 ): Promise<CustomResponse<any>> {
   // Check if the user has an active session
   // if (!hasSession()) {

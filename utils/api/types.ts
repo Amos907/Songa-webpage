@@ -15,7 +15,7 @@ interface CreateRiderProfile {
   rider: string | undefined;
 }
 
-interface BikeDetails {
+interface CreateBikeData {
   type: string;
   ev_model: string | null;
   fuel_model: string | null;
@@ -25,10 +25,10 @@ interface BikeDetails {
 }
 
 interface uploadDocuments {
-  ID_front: File;
-  ID_back: File;
-  license_front: File;
-  license_back: File;
-  insurance: File;
-  rider: string | undefined;
+  ID_front: File |  null,
+  ID_back:  File | null,
+  license_front: File |  null,
+  license_back: File | null,
+  insurance: File |  null,
+  rider:string | undefined;
 }

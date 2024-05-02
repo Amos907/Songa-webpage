@@ -3,6 +3,7 @@ import FormWrapper from '../../Elements/Forms/FormWrapper';
 import FormInput from "@/components/Elements/Forms/FormInput";
 import ImageUploader from '../../Elements/Forms/ImageUploader';
 import Image from 'next/image';
+import { useFormContext } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
 import { ClipLoader } from 'react-spinners';
 import { TypeOf, object, string } from 'zod';
@@ -11,11 +12,11 @@ import { toast } from 'react-toastify';
 import { uploadDocuments } from '@/utils';
 
 type RiderDetails = {
-  ID_front: File | null;
-  ID_back:  File | null;
-  license_front: File | null;
-  license_back: File | null;
-  insurance: File | null;
+  ID_front: File | null,
+  ID_back:  File | null,
+  license_front: File | null,
+  license_back: File | null,
+  insurance: File | null,
   rider:string | undefined;
 };
 
@@ -85,7 +86,9 @@ export default function Upload({ stepsCount, stepNumber, updateFields, next, bac
     }
   }
 
-  const handleImageUpload = (imageData: File, imageName: string, setImage: React.Dispatch<React.SetStateAction<File | null>>, setImageUrl: React.Dispatch<React.SetStateAction<string>>) => {
+  const handleImageUpload = (imageData: File, imageName: string, 
+    setImage: React.Dispatch<React.SetStateAction<File | null>>, 
+    setImageUrl: React.Dispatch<React.SetStateAction<string>>) => {
     const renamedFile = new File([imageData], imageName, { type: imageData.type });
     setImage(renamedFile);
     setImageUrl(URL.createObjectURL(renamedFile));
@@ -137,23 +140,26 @@ export default function Upload({ stepsCount, stepNumber, updateFields, next, bac
   async function onSubmitHandler(data: any) {
     try {
       setIsLoading(true);
+      console.log("ID_front:", data.ID_front);
+      console.log("ID_back:", data.ID_back);
+      
       // Prepare the FormData for document upload
-
       const formData = new FormData();
-      if(data.ID_front){
-        formData.append('uploads/', data.ID_front);
+     
+      if(data.ID_front){  
+        formData.append('ID_front', data.ID_front);
       }
       if(data.ID_back){
-        formData.append('uploads/', data.ID_back);
+        formData.append('ID_back', data.ID_back);
       }
       if(data.license_front) {
-        formData.append('uploads/', data.license_front);
+        formData.append('license_front', data.license_front);
       }
       if(data.license_back){
-        formData.append('uploads/', data.license_back);
+        formData.append('license_back', data.license_back);
       }
       if(data.insurance){
-        formData.append('uploads/', data.insurance);
+        formData.append('insurance', data.insurance);
       }
      
       
@@ -199,7 +205,7 @@ export default function Upload({ stepsCount, stepNumber, updateFields, next, bac
             {idFrontImage ? (
               <Image src={idFrontImageUrl} alt="ID Front" width={100} height={100} />
             ) : (
-              <ImageUploader name="" require={true} onImageUpload={(file) => handleImageUpload(file, 'ID_front', setIdFrontImage, setIdFrontImageUrl)} />
+              <ImageUploader name="ID_front" require={true} onImageUpload={(file) => handleImageUpload(file, 'ID_front', setIdFrontImage, setIdFrontImageUrl)} />
             )}
             <span className='whitespace-nowrap'><i className='text-[#FB4552]'>*</i> ID front: {data.ID_front?.name}</span>
             
@@ -209,9 +215,9 @@ export default function Upload({ stepsCount, stepNumber, updateFields, next, bac
             {idBackImage ? (
               <Image src={idBackImageUrl} alt="ID Back" width={100} height={100} />
             ) : (
-              <ImageUploader name="ID_back" onImageUpload={(file) => handleImageUpload(file, 'ID_back', setIdBackImage, setIdBackImageUrl)} />
+              <ImageUploader name="ID_back" require={true} onImageUpload={(file) => handleImageUpload(file, 'ID_back', setIdBackImage, setIdBackImageUrl)} />
             )}
-            <span className='whitespace-nowrap'><i className='text-[#FB4552]'>*</i> ID back: {data.ID_back?.name} </span>
+            <span className='whitespace-nowrap'><i className='text-[#FB4552]'>*</i> ID back</span>
           </div>
 
           <div className="flex items-center gap-2 bg-transparent border-[#FB4552] border-[1px] min-h-[48px] rounded-lg px-4">
@@ -287,3 +293,4 @@ export default function Upload({ stepsCount, stepNumber, updateFields, next, bac
     </FormProvider>
   )
 }
+
