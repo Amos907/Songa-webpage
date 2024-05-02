@@ -5,24 +5,28 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from 'react-toastify';
 import Image from 'next/image';
 
-type RiderDetails = {
+type PreviewRiderDetails = {
   first_name: string;
   last_name: string;
   password: string;
   confirmPassword: string;
   phone_no: string;
+  location: string;
+  stage_name: string;
+  town_of_operation: string;
+  job_type: string;
+  gender: string;
   ID_front: any;
   ID_back: any;
   license_front: any;
   license_back: any;
-  bike_type: string;
+  type: string;
   plate_no: string;
   insurance_provider: string;
-  insurance_policy_no: string;
 };
 
-type RiderDetailsProps = RiderDetails & {
-  updateFields: (fields: Partial<RiderDetails>) => void;
+type RiderDetailsProps = PreviewRiderDetails & {
+  updateFields: (fields: Partial<PreviewRiderDetails>) => void;
   next: () => void;
   back: () => void;
   stepNumber: number;
@@ -30,7 +34,7 @@ type RiderDetailsProps = RiderDetails & {
 };
 
 export default function Preview({ stepNumber, stepsCount, back, next, ...riderDetails}: RiderDetailsProps) {
-  let methods = useForm<RiderDetails>({
+  let methods = useForm<PreviewRiderDetails>({
     // resolver: zodResolver(riderProfileSchema),
   });
 
@@ -77,9 +81,19 @@ export default function Preview({ stepNumber, stepsCount, back, next, ...riderDe
           </div>
 
           <div className="mb-8">
+            <h1 className="mb-2 text-lg font-semibold">Work Information</h1>
+            <div>
+              <p className="mb-2">Location: {riderDetails.location}</p>
+              <p className="mb-2">Stage Name: {riderDetails.stage_name}</p>
+              <p className="mb-2">Town of Operation: {riderDetails.town_of_operation}</p>
+              <p className="mb-2">Job Type: {riderDetails.job_type}</p>
+            </div>
+          </div>
+
+          <div className="mb-8">
             <h1 className="mb-2 text-lg font-semibold">Bike Information</h1>
             <div>
-              <p className="mb-2">Bike Type: {riderDetails.bike_type}</p>
+              <p className="mb-2">Bike Type: {riderDetails.type}</p>
               <p className="mb-2">Plate Number: {riderDetails.plate_no}</p>
             </div>
           </div>
@@ -88,7 +102,7 @@ export default function Preview({ stepNumber, stepsCount, back, next, ...riderDe
             <h1 className="mb-2 text-lg font-semibold">Insurance Information</h1>
             <div>
               <p className="mb-2">Insurance Provider: {riderDetails.insurance_provider}</p>
-              <p className="mb-2">Insurance Policy Number: {riderDetails.insurance_policy_no}</p>
+              {/* <p className="mb-2">Insurance Policy Number: {riderDetails.insurance_policy_no}</p> */}
             </div>
           </div>
         </div>

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import FormWrapper from '../../Elements/Forms/FormWrapper';
+import FormInput from "@/components/Elements/Forms/FormInput";
 import ImageUploader from '../../Elements/Forms/ImageUploader';
 import Image from 'next/image';
+import { useFormContext } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
 import { ClipLoader } from 'react-spinners';
 import { TypeOf, object, string } from 'zod';
@@ -10,10 +12,12 @@ import { toast } from 'react-toastify';
 import { uploadDocuments } from '@/utils';
 
 type RiderDetails = {
-  ID_front: File | null;
-  ID_back:  File | null;
-  license_front: File | null;
-  license_back: File | null;
+  ID_front: File | null,
+  ID_back:  File | null,
+  license_front: File | null,
+  license_back: File | null,
+  insurance: File | null,
+  rider:string | undefined;
 };
 
 type RiderDetailsPassedProps = {
@@ -39,11 +43,19 @@ const riderDetailsSchema = object({
 
 export type RiderDetailsInput = TypeOf<typeof riderDetailsSchema>;
 
+let riderId = localStorage.getItem("riderId");
+if (!riderId) {
+  console.error("Rider ID not found in local storage");
+  riderId = "default"; // Set a default value or error message
+}
+
 const INITIAL_DATA: RiderDetails = {
   ID_front: null,
   ID_back: null,
   license_front: null,
-  license_back: null
+  license_back: null,
+  insurance: null,
+  rider: riderId,
 }
 
 export default function Upload({ stepsCount, stepNumber, updateFields, next, back }: RiderDetailsProps) {
@@ -56,20 +68,27 @@ export default function Upload({ stepsCount, stepNumber, updateFields, next, bac
   const [idBackImage, setIdBackImage] = useState<File | null>(null);
   const [dlFrontImage, setDlFrontImage] = useState<File | null>(null);
   const [dlBackImage, setDlBackImage] = useState<File | null>(null);
+  const [insuranceImage, setInsuranceImage] = useState<File | null>(null);
 
   const [idFrontImageUrl, setIdFrontImageUrl] = useState<string>('');
   const [idBackImageUrl, setIdBackImageUrl] = useState<string>('');
   const [dlFrontImageUrl, setDlFrontImageUrl] = useState<string>('');
   const [dlBackImageUrl, setDlBackImageUrl] = useState<string>('');
+  const [insuranceImageUrl, setInsuranceImageUrl] = useState<string>('');
 
   function updateData(fields: Partial<RiderDetails>) {
     setData(prev => {
       return { ...prev, ...fields };
     });
-    updateFields(fields)
+     // Only call updateFields if the rider field is not included in the fields object
+     if (!fields.hasOwnProperty('rider') && fields.rider !== undefined) {
+      updateFields(fields);
+    }
   }
 
-  const handleImageUpload = (imageData: File, imageName: string, setImage: React.Dispatch<React.SetStateAction<File | null>>, setImageUrl: React.Dispatch<React.SetStateAction<string>>) => {
+  const handleImageUpload = (imageData: File, imageName: string, 
+    setImage: React.Dispatch<React.SetStateAction<File | null>>, 
+    setImageUrl: React.Dispatch<React.SetStateAction<string>>) => {
     const renamedFile = new File([imageData], imageName, { type: imageData.type });
     setImage(renamedFile);
     setImageUrl(URL.createObjectURL(renamedFile));
@@ -80,6 +99,7 @@ export default function Upload({ stepsCount, stepNumber, updateFields, next, bac
     if (idFrontImage) {
       const reader = new FileReader();
       reader.onload = () => {
+        console.log("Data URL of ID Front Image:", reader.result);
         setIdFrontImageUrl(reader.result as string);
       };
       reader.readAsDataURL(idFrontImage);
@@ -108,27 +128,41 @@ export default function Upload({ stepsCount, stepNumber, updateFields, next, bac
       };
       reader.readAsDataURL(dlBackImage);
     }
-  }, [idFrontImage, idBackImage, dlFrontImage, dlBackImage]);
+    if (insuranceImage) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setInsuranceImageUrl(reader.result as string);
+      };
+      reader.readAsDataURL(insuranceImage);
+    }
+  }, [idFrontImage, idBackImage, dlFrontImage, dlBackImage, insuranceImage]);
 
-  async function onSubmitHandler(values: any) {
+  async function onSubmitHandler(data: any) {
     try {
       setIsLoading(true);
+      console.log("ID_front:", data.ID_front);
+      console.log("ID_back:", data.ID_back);
+      
       // Prepare the FormData for document upload
-
       const formData = new FormData();
-      if(data.ID_front){
-        formData.append('images', data.ID_front);
+     
+      if(data.ID_front){  
+        formData.append('ID_front', data.ID_front);
       }
       if(data.ID_back){
-        formData.append('images', data.ID_back);
+        formData.append('ID_back', data.ID_back);
       }
       if(data.license_front) {
-        formData.append('images', data.license_front);
+        formData.append('license_front', data.license_front);
       }
       if(data.license_back){
-        formData.append('images', data.license_back);
+        formData.append('license_back', data.license_back);
       }
-
+      if(data.insurance){
+        formData.append('insurance', data.insurance);
+      }
+     
+      
       // Upload documents
       const res = await uploadDocuments(formData);
       if(res){ //handle success res status
@@ -171,9 +205,9 @@ export default function Upload({ stepsCount, stepNumber, updateFields, next, bac
             {idFrontImage ? (
               <Image src={idFrontImageUrl} alt="ID Front" width={100} height={100} />
             ) : (
-              <ImageUploader name="" require={true} onImageUpload={(file) => handleImageUpload(file, 'ID_front', setIdFrontImage, setIdFrontImageUrl)} />
+              <ImageUploader name="ID_front" require={true} onImageUpload={(file) => handleImageUpload(file, 'ID_front', setIdFrontImage, setIdFrontImageUrl)} />
             )}
-            <span className='whitespace-nowrap'><i className='text-[#FB4552]'>*</i> ID Front: {data.ID_front?.name}</span>
+            <span className='whitespace-nowrap'><i className='text-[#FB4552]'>*</i> ID front: {data.ID_front?.name}</span>
             
           </div>
 
@@ -181,28 +215,45 @@ export default function Upload({ stepsCount, stepNumber, updateFields, next, bac
             {idBackImage ? (
               <Image src={idBackImageUrl} alt="ID Back" width={100} height={100} />
             ) : (
-              <ImageUploader require={true} onImageUpload={(file) => handleImageUpload(file, 'ID_back', setIdBackImage, setIdBackImageUrl)} />
+              <ImageUploader name="ID_back" require={true} onImageUpload={(file) => handleImageUpload(file, 'ID_back', setIdBackImage, setIdBackImageUrl)} />
             )}
-            <span className='whitespace-nowrap'><i className='text-[#FB4552]'>*</i> ID Back: {data.ID_back?.name} </span>
+            <span className='whitespace-nowrap'><i className='text-[#FB4552]'>*</i> ID back</span>
           </div>
 
           <div className="flex items-center gap-2 bg-transparent border-[#FB4552] border-[1px] min-h-[48px] rounded-lg px-4">
             {dlFrontImage ? (
               <Image src={dlFrontImageUrl} alt="Driving License Front" width={100} height={100} />
             ) : (
-              <ImageUploader require={false} onImageUpload={(file) => handleImageUpload(file, "license_front", setDlFrontImage, setDlFrontImageUrl)} />
+              <ImageUploader name="license_front" onImageUpload={(file) => handleImageUpload(file, "license_front", setDlFrontImage, setDlFrontImageUrl)} />
             )}
-            <span className='whitespace-nowrap'>DL Front: {data.license_front?.name}</span>
+            <span className='whitespace-nowrap'>License Front: {data.license_front?.name}</span>
           </div>
 
           <div className="flex items-center gap-2 bg-transparent border-[#FB4552] border-[1px] min-h-[48px] rounded-lg px-4">
             {dlBackImage ? (
               <Image src={dlBackImageUrl} alt="DL Back" width={100} height={100} />
             ) : (
-              <ImageUploader require={false} onImageUpload={(file) => handleImageUpload(file, "license_back", setDlBackImage, setDlBackImageUrl)} />
+              <ImageUploader name="license_back" onImageUpload={(file) => handleImageUpload(file, "license_back", setDlBackImage, setDlBackImageUrl)} />
             )}
-            <span className='whitespace-nowrap'>DL Back: {data.license_back?.name}</span>
+            <span className='whitespace-nowrap'>License Back: {data.license_back?.name}</span>
           </div>
+
+          <div className="flex items-center gap-2 bg-transparent border-[#FB4552] border-[1px] min-h-[48px] rounded-lg px-4">
+            {insuranceImage ? (
+              <Image src={insuranceImageUrl} alt="Insurance" width={100} height={100} />
+            ) : (
+              <ImageUploader name="insurance" require={false} onImageUpload={(file) => handleImageUpload(file, "insurance", setInsuranceImage, setInsuranceImageUrl)} />
+            )}
+            <span className='whitespace-nowrap'>Insurance: {data.insurance?.name}</span>
+          </div>
+
+          {/* rider ID field */}
+            {/* Hidden rider input */}
+            <FormInput
+              type={"hidden"}
+              name={"rider"}
+              value={data.rider}
+            />
         </FormWrapper>
         <div className="mt-[1rem] flex gap-[.5rem] justify-end">
           {showBackButton && (
@@ -242,3 +293,4 @@ export default function Upload({ stepsCount, stepNumber, updateFields, next, bac
     </FormProvider>
   )
 }
+
