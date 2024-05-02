@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 
-const BASE_URL = "http://127.0.0.1:8000";
+const BASE_URL = "https://44.219.217.32";
 
 interface ErrorMessage {
   error: object;
@@ -46,11 +46,12 @@ export async function createRiderAccount(
     // const sessionToken = response.data.rider.sessionToken;
     // const userId = response.data.rider.id;
     const riderId = response.data.id
-    console.log(typeof riderId)
     // localStorage.setItem("sessionToken", sessionToken);
     // localStorage.setItem("userId", userId);
-    localStorage.setItem("riderId", riderId.toString());
-    console.log(typeof riderId)
+    if (typeof window !== 'undefined') {
+      // Only access localStorage if running in the browser
+      localStorage.setItem("riderId", riderId.toString());
+    }
     return response;
   }
   
@@ -85,11 +86,20 @@ export async function createRiderProfile(
   // }
   const endpoint = `${BASE_URL}/rider/api/v1/rider-profile/`;
   // const endpoint = `${BASE_URL}/api/riders/profile/create-profile/${ localStorage.getItem('userId')}`;
+  let authorizationHeader = {};
+  if (typeof window !== 'undefined') {
+    const riderId = localStorage.getItem("riderId");
+    if (riderId) {
+      authorizationHeader = {
+        Authorization: `Bearer ${riderId}`,
+      };
+    }
+  }
   const requestOptions: AxiosRequestConfig = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("riderId")}`,
+      ...authorizationHeader,
     },
     data: data,
   };
@@ -118,12 +128,20 @@ export async function createBikeDetails(
   //   throw { error: "You need to have an account to upload documents." };
   // }
   const endpoint = `${BASE_URL}/rider/api/v1/bike-details/`;
+  let authorizationHeader = {};
+  if (typeof window !== 'undefined') {
+    const riderId = localStorage.getItem("riderId");
+    if (riderId) {
+      authorizationHeader = {
+        Authorization: `Bearer ${riderId}`,
+      };
+    }
+  }
   const requestOptions: AxiosRequestConfig = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      // Authorization: `Bearer ${localStorage.getItem("sessionToken")}`,
-      Authorization: `Bearer ${localStorage.getItem("riderId")}`,
+      ...authorizationHeader,
     },
     data: data,
   };
@@ -153,16 +171,24 @@ export async function uploadDocuments(
   //   return { error: "You need to have an account to upload documents." };
   // }
   const endpoint = `${BASE_URL}/rider/api/v1/kyc-images/`;
+  let authorizationHeader = {};
+  if (typeof window !== 'undefined') {
+    const riderId = localStorage.getItem("riderId");
+    if (riderId) {
+      authorizationHeader = {
+        Authorization: `Bearer ${riderId}`,
+      };
+    }
+  }
   const requestOptions: AxiosRequestConfig = {
     method: "POST",
-    maxBodyLength: Infinity,
     headers: {
-      "Content-Type": "multipart/form-data", // Important for file uploads
-      // Authorization: `Bearer ${localStorage.getItem("sessionToken")}`, // Attach the session token to the request
-      Authorization: `Bearer ${localStorage.getItem("riderId")}`,
+      "Content-Type": "application/json",
+      ...authorizationHeader,
     },
     data: files,
   };
+
   try {
     const response = await axios(endpoint, requestOptions);
     toast.success("Documents uploaded successfully!");
