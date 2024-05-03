@@ -91,11 +91,16 @@ export default function Upload({ stepsCount, stepNumber, updateFields, next, bac
     setImageUrl: React.Dispatch<React.SetStateAction<string>>) => {
     const renamedFile = new File([imageData], imageName, { type: imageData.type });
     setImage(renamedFile);
-    setImageUrl(URL.createObjectURL(renamedFile));
+    console.log(renamedFile)
+    const imageUrl = URL.createObjectURL(renamedFile);
+    setImageUrl(imageUrl);
+    console.log("Image URL:", imageUrl);
     updateData({ [imageName]: renamedFile });
+    console.log("Updated data:", { [imageName]: renamedFile });
   };
 
   useEffect(() => {
+    // console.log("ID Front Image:", idFrontImage);
     if (idFrontImage) {
       const reader = new FileReader();
       reader.onload = () => {
@@ -140,26 +145,31 @@ export default function Upload({ stepsCount, stepNumber, updateFields, next, bac
   async function onSubmitHandler(data: any) {
     try {
       setIsLoading(true);
-      console.log("ID_front:", data.ID_front);
-      console.log("ID_back:", data.ID_back);
-      
+      // console.log("ID_front:", data.ID_front);
+      // console.log("ID_back:", data.ID_back);
+      console.log("Data:", data)
       // Prepare the FormData for document upload
       const formData = new FormData();
      
       if(data.ID_front){  
         formData.append('ID_front', data.ID_front);
+        console.log('ID_front appended:', data.ID_front);
       }
       if(data.ID_back){
         formData.append('ID_back', data.ID_back);
+        console.log('ID_front appended:', data.ID_back);
       }
       if(data.license_front) {
         formData.append('license_front', data.license_front);
+        console.log('ID_front appended:', data.license_front);
       }
       if(data.license_back){
         formData.append('license_back', data.license_back);
+        console.log('ID_front appended:', data.license_back);
       }
       if(data.insurance){
         formData.append('insurance', data.insurance);
+        console.log('ID_front appended:', data.insurance);
       }
      
       
@@ -207,7 +217,7 @@ export default function Upload({ stepsCount, stepNumber, updateFields, next, bac
             ) : (
               <ImageUploader name="ID_front" require={true} onImageUpload={(file) => handleImageUpload(file, 'ID_front', setIdFrontImage, setIdFrontImageUrl)} />
             )}
-            <span className='whitespace-nowrap'><i className='text-[#FB4552]'>*</i> ID front: {data.ID_front?.name}</span>
+            <span className='whitespace-nowrap'><i className='text-[#FB4552]'>*</i> ID_front: {data.ID_front?.name}</span>
             
           </div>
 
@@ -217,7 +227,7 @@ export default function Upload({ stepsCount, stepNumber, updateFields, next, bac
             ) : (
               <ImageUploader name="ID_back" require={true} onImageUpload={(file) => handleImageUpload(file, 'ID_back', setIdBackImage, setIdBackImageUrl)} />
             )}
-            <span className='whitespace-nowrap'><i className='text-[#FB4552]'>*</i> ID back</span>
+            <span className='whitespace-nowrap'><i className='text-[#FB4552]'>*</i> ID_back</span>
           </div>
 
           <div className="flex items-center gap-2 bg-transparent border-[#FB4552] border-[1px] min-h-[48px] rounded-lg px-4">

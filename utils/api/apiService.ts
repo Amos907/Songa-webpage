@@ -1,7 +1,8 @@
+"use client"
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 
-const BASE_URL = "https://44.219.217.32";
+const BASE_URL = "http://127.0.0.1:8000";
 
 interface ErrorMessage {
   error: object;

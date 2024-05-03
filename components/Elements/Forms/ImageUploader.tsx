@@ -17,6 +17,7 @@ function ImageUploader({name, require, onImageUpload }:
         console.log("The img data: ", typeof(imageData))
         setSelectedImages((prevImages) => [...prevImages, imageData]);
         onImageUpload(file); // Pass the file object to the parent component
+        
       };
       reader.onerror = () => {
         console.error('Error reading file');
@@ -33,7 +34,7 @@ function ImageUploader({name, require, onImageUpload }:
   return (
     <div className='w-full flex flex-col gap-1'>
       <div className='w-full'>
-        <input type="file" accept="image/*" required={require} onChange={handleImageUpload} />
+        <input type="file" accept="image/*" required={require} onChange={handleImageUpload} name={name} />
         {selectedImages.length > 0 && (
           <div>
             <h3>Selected Images:</h3>
