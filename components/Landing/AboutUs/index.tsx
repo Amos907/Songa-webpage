@@ -2,11 +2,14 @@
 import Image from "next/image";
 import React from "react";
 import { sans_hebrew } from "@/app/ui/fonts";
+import Link from "next/link";
 
 interface CardInfo {
   title: string;
   description: string;
   image: string;
+  link: string;
+  key: string;
 }
 
 const Partners = [
@@ -17,22 +20,28 @@ const Partners = [
 
 const CardInfo = [
   {
-    title: "Become an AI Rider",
+    title: "Boda Tech",
     description:
       "We are using 21st Century technology to digitize our riders and offer quality services.",
     image: "/assets/images/ai.png",
+    key: "REGISTER",
+    link: "/register",
   },
   {
     title: "Customer Service Agent",
     description:
-      "Digital riders means digital service. We have paired our riders with an AI twin.",
+      "Chat with songaAI to request for more customized service and overall support around your bodaboda needs.",
     image: "/assets/images/chatbot.png",
+    key: "CHATBOT",
+    link: "/chatbot",
   },
   {
     title: "24 hrs Services",
     description:
-      "Use our ever available agent to seek boda services. We have our riders distributed all over Kenya to take care of your needs.",
+      "We have riders from all over Kenya. We will always use our technology to get you the best rider on our platform ",
     image: "/assets/images/support2.png",
+    key: "LEARN MORE",
+    link: "/learn-more"
   },
 ];
 
@@ -48,8 +57,8 @@ function PartnerImage({ image }: { image: string }) {
 
 function SectionCard({ cardInfo }: { cardInfo: CardInfo }) {
   return (
-    <div className="h-36 flex flex-col justify-center bg-white border border-gray-200 rounded-lg shadow md:h-48 lg:h-64 md:flex-row md:flex-grow md:items-center md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
-      <figure className="hidden md:block rounded-t-lg h-48 md:w-full md:rounded-md relative">
+    <div className="h-36 flex flex-col justify-center bg-[#f1f3f5] border border-gray-200 rounded-lg shadow md:h-48 lg:h-64 md:flex-row md:flex-grow md:items-center md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
+      {/* <figure className="hidden md:block rounded-t-lg h-48 md:w-full md:rounded-md relative">
         <Image
           src={`${cardInfo.image}`}
           alt="boba boda riders"
@@ -57,14 +66,17 @@ function SectionCard({ cardInfo }: { cardInfo: CardInfo }) {
           fill
           className=""
         />
-      </figure>
-      <div className="px-2 lg:w-96">
+      </figure> */}
+      <div className="px-2 lg:w-96 text-center">
         <h5 className="mb-2 text-2xl font-bold tracking-tight text-[#A90000] dark:text-white">
           {`${cardInfo.title}`}
         </h5>
         <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
           {`${cardInfo.description}`}
         </p>
+        <Link href={cardInfo.link} className="mb-3 font-extrabold text-[#0F9434] text-lg cursor- ">
+          <p>{`${cardInfo.key}`}</p>
+        </Link>
       </div>
     </div>
   );
@@ -86,18 +98,18 @@ export default function AboutUs() {
           </figure>
         </div>
 
-        <div className="w-full h-full pt-24 md:pt-32 bg-[#f1f3f5] bg-opacity-75 absolute z-0 md:px-16 md:space-y-28">
+        <div className="w-full h-full pt-18 md:pt-24 bg-black bg-opacity-75 absolute z-0 md:px-16 md:space-y-28">
           <div className="px-4 space-y-4 lg:w-1/3">
               <div className="flex space-x-2">
-                <div className="w-8 h-1.5 bg-black"></div>
+                <div className="w-8 h-1.5 bg-white"></div>
                 <div className="w-8 h-1.5 bg-red-500"></div>
                 <div className="w-8 h-1.5 bg-[#00FF48]"></div>
               </div>
               <p
-                className={`${sans_hebrew.className} tracking-normal text-[#000000] text-xl font-semibold md:text-2xl md:leading-2 `}
+                className={`${sans_hebrew.className} tracking-normal text-[#FFFFFF] text-lg font-semibold md:text-xl md:leading-normal `}
               >
-                SONGA is a learning bodaboda machine that has been trained by
-                bodaboda riders to offer services leveraging AI.
+                SONGA is a bodaboda rider&apos;s Smart App that gives him a digital experience.
+                In the technology of 21 Century , we aim to leverage what we know incorporating AI to improve service delivery.
               </p>
           </div>
 

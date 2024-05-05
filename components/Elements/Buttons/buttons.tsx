@@ -10,6 +10,7 @@ interface StoreButtons {
 interface HeroButtons {
   text: string;
   url: string;
+  onClick: () => void;
 }
 
 interface AppButtons {
@@ -29,11 +30,11 @@ export const StoreButtons = ({ text, url, icon }: StoreButtons) => {
   );
 };
 
-export const HeroButtons = ({ text, url }: HeroButtons) => {
+export const HeroButtons = ({ text, url, onClick, }: HeroButtons) => {
   return (
     <div className="pt-4">
       <Link href={url}>
-        <button className="border-none bg-[#A90000] font-bold px-12 py-[8px] w-[250px] outline-none text-[#ffffff] text-center text-[16px] rounded-lg hover:bg-[#009245]">
+        <button onClick={onClick} className="border-none bg-[#A90000] font-bold px-12 py-[8px] w-[250px] outline-none text-[#ffffff] text-center text-[16px] rounded-lg">
           {text}
         </button>
       </Link>

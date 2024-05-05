@@ -1,3 +1,4 @@
+
 import { Hero, LandingFooter, Mission, Trustees } from "../components";
 import AboutUs from "@/components/Landing/AboutUs";
 import ServicesOffered from "@/components/Landing/ServicesOffered"
@@ -8,8 +9,8 @@ export default function Home() {
   return (
     <div>
       <Hero />
-      <Trustees/>
       <AboutUs/>
+      {/* <Trustees/> */}
       <ServicesOffered/>
       {/* <RiderRegistration /> */}
     </div>

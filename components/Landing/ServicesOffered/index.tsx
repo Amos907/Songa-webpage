@@ -10,12 +10,13 @@ import {
 function Rides() {
   return (
     <div className="p-4 md:p-12">
-      <div className="flex justify-center">
+      <h1 className="text-center text-[#FFFFFF] font-extrabold text-lg md:text-xl mb-4">DIGITAL RIDER EXPERIENCE</h1>
+      <div className="flex justify-center mt-2">
         <div className="flex flex-col flex-1 ">
-          <div className=" text-lg md:text-justify text-white text-[19px]  leading-normal">
+          <div className="text-lg md:text-justify text-white text-[19px]  leading-normal">
             <p>
-              With our riders distributed everywhere,you can now request for a
-              trip at a cheaper prices with convenience at best
+            The market is evolving and passengers are getting more digital with new technologies. 
+            SONGA Smart App is a rider on  your phone, and uses technology to pair you with a rider closest to you.
             </p>
             <p className="mt-4 font-semibold">
               Available for Android and iOS devices
@@ -39,20 +40,19 @@ function Rides() {
 function Delivery() {
   return (
     <div className="p-4 md:p-12">
+      <h1 className="text-center text-[#FFFFFF] font-extrabold text-lg md:text-xl mb-4">TRANSFORMATION</h1>
       <div className="flex justify-center">
         <div className="flex flex-col flex-1 ">
           <div className="px-0 text-lg md:text-justify text-white md:text-[19px]  md:leading-normal">
             <p>
-              SONGA works with riders to ensure customer goods are delivered as
-              well as being able to pick goods for our customers and deliver
-              them to their preferred destination.
-            </p>
-            <p className="mt-4 font-semibold">
-              Available for Android and iOS devices
+              Our technology is stemmed by the challenges currently existing in the boda
+              industry.Our goal is to change the way we use boda
+              by introducing technology to the rider
+              who actually provide the services.
             </p>
           </div>
           <div className="text-white text-[24px] font-bold my-5 text-center lg:text-left">
-            <AppButtons text="Get the App" url="/" />
+            <AppButtons text="Learn More" url="/" />
           </div>
         </div>
         <Image
