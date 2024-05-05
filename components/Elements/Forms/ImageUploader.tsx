@@ -7,15 +7,16 @@ function ImageUploader({name, require, onImageUpload }:
   { onImageUpload: (imageData: File) => void , require?: boolean, name?: string }) {
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
 
-  const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleOnImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        console.log("Selected file:", file);
+        // console.log("Selected file:", file);
         const imageData = reader.result as string; // Cast the result to string
-        console.log("The img data: ", typeof(imageData))
+        // console.log("The img data: ", typeof(imageData))
         setSelectedImages((prevImages) => [...prevImages, imageData]);
+        // console.log('Before onImageUpload call - idFrontImage:', file);
         onImageUpload(file); // Pass the file object to the parent component
         
       };
@@ -26,6 +27,7 @@ function ImageUploader({name, require, onImageUpload }:
     }
   };
 
+
   const {
     register,
     formState: { errors },
@@ -34,7 +36,7 @@ function ImageUploader({name, require, onImageUpload }:
   return (
     <div className='w-full flex flex-col gap-1'>
       <div className='w-full'>
-        <input type="file" accept="image/*" required={require} onChange={handleImageUpload} name={name} />
+        <input type="file" accept="image/*" required={require} onChange={handleOnImageUpload} name={name} />
         {selectedImages.length > 0 && (
           <div>
             <h3>Selected Images:</h3>

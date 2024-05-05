@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect, useState } from "react";
 import FormInput from "@/components/Elements/Forms/FormInput";
 import FormWrapper from "@/components/Elements/Forms/FormWrapper";
@@ -8,19 +9,7 @@ import { ClipLoader } from "react-spinners";
 import { createRiderProfile } from "@/utils";
 import { toast } from "react-toastify";
 
-
-const riderProfileSchema = object({
-  location: string().min(1, "Location is required"),
-  stage_name: string().min(1, "Stage is required"),
-  town_of_operation: string().min(1, "Address is required"),
-  job_type: string().min(1, "Job type is required"),
-  gender: string().min(1, "Gender is required"),
-  rider: string(),
-});
-
-export type RiderProfileInput = TypeOf<typeof riderProfileSchema>;
-
-type RiderProfile = {
+type RiderDetails = {
   location: string;
   stage_name: string;
   town_of_operation: string;
@@ -29,24 +18,37 @@ type RiderProfile = {
   rider: string;
 };
 
-type RiderProfilePassedProps = {
+type RiderDetailsPassedProps = {
   stepNumber: number;
   stepsCount: number;
 };
 
-type RiderProfileProps = RiderProfilePassedProps & {
-  updateFields: (fields: Partial<RiderProfile>) => void;
+type RiderDetailsProps = RiderDetailsPassedProps & {
+  updateFields: (fields: Partial<RiderDetails>) => void;
   next: () => void;
   back: () => void;
 };
 
-let riderId = localStorage.getItem("riderId");
+let riderId = window.localStorage.getItem("riderId");
 if (!riderId) {
   console.error("Rider ID not found in local storage");
   riderId = "default"; // Set a default value or error message
-}
+} 
 
-const INITIAL_DATA: RiderProfile = {
+
+const riderDetailsSchema = object({
+  location: string().min(1, "Location is required"),
+  stage_name: string().min(1, "Stage is required"),
+  town_of_operation: string().min(1, "Address is required"),
+  job_type: string().min(1, "Job type is required"),
+  gender: string().min(1, "Gender is required"),
+  rider: string(),
+});
+
+export type RiderDetailsInput = TypeOf<typeof riderDetailsSchema>;
+
+
+const INITIAL_DATA: RiderDetails = {
   location: "",
   stage_name: "",
   town_of_operation: "",
@@ -61,47 +63,49 @@ export default function RiderProfile({
   updateFields,
   next,
   back,
-}: RiderProfileProps) {
+}: RiderDetailsProps) {
   const [data, setData] = useState(INITIAL_DATA);
   const [isLoading, setIsLoading] = useState(false);
 
-  //  // retrieve riderId from local storage ---- remove this bit before pushing
-  //  useEffect(() => {
-  //   const riderId = localStorage.getItem("riderId");
-  //   // console.log(riderId)
-  //   if ((riderId) ) {
-  //     setData((prevData) => ({
-  //       ...prevData,
-  //       rider: riderId.toString(),
-  //     }));
-  //     // console.log("Data rider:", riderId);
-  //     // console.log(typeof riderId)
-  //   }
-  // }, []);
+//    // retrieve riderId from local storage ---- remove this bit before pushing
+//    useEffect(() => {
+//     const riderId = localStorage.getItem("riderId");
+//     console.log(riderId)
+//     // if ((riderId) ) {
+//     //   setData((prevData) => ({
+//     //     ...prevData,
+//     //     rider: riderId.toString(),
+//     //   }));
+//       // console.log("Data rider:", riderId);
+//       // console.log(typeof riderId)
+//     }
+// , []);
   
+function updateData(fields: Partial<RiderDetails>) {
+  setData((prev) => {
+    return { ...prev, ...fields };
+  });
 
-  function updateData(fields: Partial<RiderProfile>) {
-    setData((prev) => {
-      return { ...prev, ...fields };
-    });
-    // Only call updateFields if the rider field is not included in the fields object
-    if (!fields.hasOwnProperty('rider') && fields.rider !== undefined) {
-      updateFields(fields);
-    }
+  // Check if fields contain keys other than 'rider'
+  const otherFieldsPresent = Object.keys(fields).some(key => key !== 'rider');
+
+  // Call updateFields only if other fields are present
+  if (otherFieldsPresent) {
+    updateFields(fields);
   }
+}
 
-
-  async function onSubmitHandler(values: RiderProfile) {
+  async function onSubmitHandler(data: RiderDetails) {
     try {
       // console.log("Data before submitting:", values);
       setIsLoading(true);
       await createRiderProfile({
-        location: values.location,
-        stage_name: values.stage_name,
-        town_of_operation: values.town_of_operation,
-        job_type: values.job_type,
-        gender: values.gender,
-        rider: values.rider
+        location: data.location,
+        stage_name: data.stage_name,
+        town_of_operation: data.town_of_operation,
+        job_type: data.job_type,
+        gender: data.gender,
+        rider: data.rider
       });
       next();
     } catch (error: any) {
@@ -115,8 +119,8 @@ export default function RiderProfile({
     }
   }
 
-  let methods = useForm<RiderProfileInput>({
-    resolver: zodResolver(riderProfileSchema),
+  let methods = useForm<RiderDetailsInput>({
+    resolver: zodResolver(riderDetailsSchema),
   });
 
   const {

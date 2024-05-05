@@ -1,4 +1,3 @@
-"use client"
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 
@@ -13,11 +12,12 @@ type CustomResponse<T> = AxiosResponse<T> | { error: string };
 
 // Function to check if sessionToken and userId are already present in local storage
 // function hasSession(): boolean {
-//   // const sessionToken = localStorage.getItem("sessionToken");
+// //   // const sessionToken = localStorage.getItem("sessionToken");
 //   const riderId = localStorage.getItem("riderId");
-//   // return sessionToken !== null && userId !== null;
+// //   // return sessionToken !== null && userId !== null;
 //   return riderId !== null;
 // }
+
 
 export async function createRiderAccount(
   data: CreateRiderData
@@ -44,16 +44,13 @@ export async function createRiderAccount(
       toast.success('Rider account created successfully!');
     }
     
-    // const sessionToken = response.data.rider.sessionToken;
-    // const userId = response.data.rider.id;
     const riderId = response.data.id
-    // localStorage.setItem("sessionToken", sessionToken);
-    // localStorage.setItem("userId", userId);
-    if (typeof window !== 'undefined') {
-      // Only access localStorage if running in the browser
-      localStorage.setItem("riderId", riderId.toString());
-    }
-    return response;
+    console.log(riderId)
+    // Set riderId to localStorage
+    localStorage.setItem('riderId', riderId.string());
+    
+    return response
+   
   }
   
    catch (e: any) {
@@ -86,21 +83,12 @@ export async function createRiderProfile(
   //   return { error: "You need to have an account to upload documents." };
   // }
   const endpoint = `${BASE_URL}/rider/api/v1/rider-profile/`;
-  // const endpoint = `${BASE_URL}/api/riders/profile/create-profile/${ localStorage.getItem('userId')}`;
-  let authorizationHeader = {};
-  if (typeof window !== 'undefined') {
-    const riderId = localStorage.getItem("riderId");
-    if (riderId) {
-      authorizationHeader = {
-        Authorization: `Bearer ${riderId}`,
-      };
-    }
-  }
+  
   const requestOptions: AxiosRequestConfig = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      ...authorizationHeader,
+      Authorization: `Bearer ${localStorage.getItem("riderId")}`
     },
     data: data,
   };
@@ -113,7 +101,9 @@ export async function createRiderProfile(
     }
     return response;
   } catch (e: any) {
-    if (e.response && e.response.data && e.response.data.message) {
+    if (e.response && 
+      e.response.data 
+      && e.response.data.message) {
       return e.response.data.message;
     } else {
       throw { error: "An error occurred while creating the user profile." };
@@ -129,20 +119,12 @@ export async function createBikeDetails(
   //   throw { error: "You need to have an account to upload documents." };
   // }
   const endpoint = `${BASE_URL}/rider/api/v1/bike-details/`;
-  let authorizationHeader = {};
-  if (typeof window !== 'undefined') {
-    const riderId = localStorage.getItem("riderId");
-    if (riderId) {
-      authorizationHeader = {
-        Authorization: `Bearer ${riderId}`,
-      };
-    }
-  }
+  
   const requestOptions: AxiosRequestConfig = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      ...authorizationHeader,
+      // Authorization: `Bearer ${localStorage.getItem("riderId")}`,
     },
     data: data,
   };
@@ -172,29 +154,26 @@ export async function uploadDocuments(
   //   return { error: "You need to have an account to upload documents." };
   // }
   const endpoint = `${BASE_URL}/rider/api/v1/kyc-images/`;
-  let authorizationHeader = {};
-  if (typeof window !== 'undefined') {
-    const riderId = localStorage.getItem("riderId");
-    if (riderId) {
-      authorizationHeader = {
-        Authorization: `Bearer ${riderId}`,
-      };
-    }
-  }
+  
   const requestOptions: AxiosRequestConfig = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      ...authorizationHeader,
+      Authorization: `Bearer ${localStorage.getItem("riderId")}`,
     },
     data: files,
   };
 
   try {
+    console.log("Sending request to:", endpoint);
+    console.log("Request options:", requestOptions);
+
     const response = await axios(endpoint, requestOptions);
+    console.log("Response received:", response);
     toast.success("Documents uploaded successfully!");
     return response;
   } catch (e: any) {
+    console.error("Error uploading documents:", e);
     if (e.response && e.response.data && e.response.data.message) {
       // toast.error(e.response.data.message)
       return { error: e.response.data.message };
