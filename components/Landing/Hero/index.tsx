@@ -1,37 +1,52 @@
 "use client";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { sans_hebrew } from "@/app/ui/fonts";
 import { HeroButtons } from "@/components/Elements/Buttons/buttons";
+import WaitlistPopup from "@/components/Elements/Waitlist";
+
 
 export const Hero = () => {
+  const [showWaitlistPopup, setShowWaitlistPopup] = useState(false);
+
+  const handleGetStarted = () => {
+    setShowWaitlistPopup(true);
+  };
+
+  const handleClose = () => {
+    setShowWaitlistPopup(false);
+  };
+
   return (
     <div className="h-screen w-full">
       {/* mobile view background */}
-      <div className="w-full md:hidden ">
-        <Image
-          src="/assets/images/hero-bg-new.jpg"
-          alt="boba boda riders"
-          sizes="100vh"
-          fill
-          className="object-cover md:object-fill"
-        />
-      </div>
-      <div className="w-full md:flex md:flex-row md:items-start">
+      {/* <div className="">
+        <div className="w-full h-[80vh] relative md:hidden ">
+          <Image
+            src="/assets/images/hero-bg-new.jpg"
+            alt="boba boda riders"
+            sizes="80vh"
+            fill
+            className="object-cover"
+          />
+        </div>
+      </div> */}
+      <div className="w-full h-full md:flex md:flex-row md:items-start bg-[#f1f3f5]">
         {/* Left Side */}
-        <div className="w-full h-full pt-20  md:w-1/2 md:flex flex-col md:justify-center md:items-center  ">
+        <div className="w-full pt-20 md:w-1/2 md:flex flex-col md:justify-center md:items-center  ">
         <div className=" w-full">
-          <div className="text-white text-center md:text-left px-6 md:px-16 space-y-20 md:space-y-16 ">
+          <div className="text-white text-center md:text-left px-6 md:px-16 space-y-20 md:space-y-12 ">
             <div>
               <p
-                className={`${sans_hebrew.className} tracking-normal md:text-[#000000] font-extrabold text-2xl md:text-4xl md:leading-2 md:tracking-[.25em]`}
+                className={`${sans_hebrew.className} tracking-normal text-[#0F9434] font-extrabold text-2xl md:text-4xl md:leading-2 md:tracking-[.25em]`}
               >
-                A DIGITAL <br/> <br /> RIDER <br /> <br /> EXPERIENCE.
+                A DIGITAL <br/><br/>  RIDER <br /><br/>  EXPERIENCE.
               </p>
             </div>
             <div className="md:space-y-8">
-              <HeroButtons text="GET STARTED" url="/" />
-              <div className="w-full flex md:space-x-8">
+              <HeroButtons text="JOIN THE WAITLIST" url="/"  onClick={handleGetStarted}/>
+              <div className="w-full flex flex-col items-center md:flex-row md:justify-start md:items-start md:space-x-8">
                 <div>
                   <Link href="/">
                     <Image
@@ -57,28 +72,6 @@ export const Hero = () => {
             </div>
             
           </div>
-
-          {/* <div className="h-72 md:h-full flex justify-between items-center mb-8">
-            <figure className="h-12 w-12 relative">
-              <Image
-                src="/assets/icons/arrow-left.svg"
-                alt="Songa Logo"
-                sizes="100vh"
-                fill
-                priority
-              />
-            </figure>
-
-            <figure className="h-12 w-12 relative">
-              <Image
-                src="/assets/icons/arrow-right.svg"
-                alt="Songa Logo"
-                sizes="100vh"
-                fill
-                priority
-              />
-            </figure>
-          </div> */}
         </div>
       </div>
 
@@ -93,12 +86,21 @@ export const Hero = () => {
                   height={840}
                   className="rounded-md"
                 />
-              <div className="absolute inset-0 bg-[#f1f3f5] bg-opacity-50 rounded-md"></div>
+              <div className="absolute inset-0 bg-black bg-opacity-50 rounded-md"></div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Image
+                  src="/assets/icons/songa-white-logo.png"
+                  alt="SONGA"
+                  width={400}
+                  height={400}
+                  className="rounded-full"
+                />
             </div>
+          </div>
           </div>
 
           {/* mobile view */}
-
+          {showWaitlistPopup && <WaitlistPopup onClose={handleClose} />}
       </div>
     </div>
   );
