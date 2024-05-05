@@ -16,10 +16,10 @@ type PreviewRiderDetails = {
   town_of_operation: string;
   job_type: string;
   gender: string;
-  ID_front: any;
-  ID_back: any;
-  license_front: any;
-  license_back: any;
+  // ID_front: any;
+  // ID_back: any;
+  // license_front: any;
+  // license_back: any;
   type: string;
   plate_no: string;
   insurance_provider: string;
@@ -45,23 +45,23 @@ export default function Preview({ stepNumber, stepsCount, back, next, ...riderDe
   const [dlFrontImageUrl, setDlFrontImageUrl] = useState<string>('');
 
 
-  useEffect(() => {
-    if (riderDetails.ID_front) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setIdFrontImageUrl(reader.result as string);
-      };
-      reader.readAsDataURL(riderDetails.ID_front);
-    }
+  // useEffect(() => {
+  //   if (riderDetails.ID_front) {
+  //     const reader = new FileReader();
+  //     reader.onload = () => {
+  //       setIdFrontImageUrl(reader.result as string);
+  //     };
+  //     reader.readAsDataURL(riderDetails.ID_front);
+  //   }
 
-    if (riderDetails.license_front) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setDlFrontImageUrl(reader.result as string);
-      };
-      reader.readAsDataURL(riderDetails.license_front);
-    }
-  }, [riderDetails.ID_front, riderDetails.license_front]);
+  //   if (riderDetails.license_front) {
+  //     const reader = new FileReader();
+  //     reader.onload = () => {
+  //       setDlFrontImageUrl(reader.result as string);
+  //     };
+  //     reader.readAsDataURL(riderDetails.license_front);
+  //   }
+  // }, [riderDetails.ID_front, riderDetails.license_front]);
 
   async function onSubmitHandler() {
     toast.success("Account created successfully.")
@@ -71,16 +71,17 @@ export default function Preview({ stepNumber, stepsCount, back, next, ...riderDe
     <FormProvider { ...methods}>
       <FormWrapper title="">
         <div className="h-96 bg-[#222222] text-white p-6">
-          <div className="mb-8">
+          <div className="mb-4">
             <h1 className="mb-2 text-lg font-semibold">Personal Information</h1>
             <div>
               <p className="mb-2">First Name: {riderDetails.first_name}</p>
               <p className="mb-2">Last Name: {riderDetails.last_name}</p>
               <p className="mb-2">Phone Number: {riderDetails.phone_no}</p>
             </div>
-          </div>
+            </div>
+          
 
-          <div className="mb-8">
+          <div className="mb-4">
             <h1 className="mb-2 text-lg font-semibold">Work Information</h1>
             <div>
               <p className="mb-2">Location: {riderDetails.location}</p>
@@ -90,37 +91,34 @@ export default function Preview({ stepNumber, stepsCount, back, next, ...riderDe
             </div>
           </div>
 
-          <div className="mb-8">
-            <h1 className="mb-2 text-lg font-semibold">Bike Information</h1>
-            <div>
-              <p className="mb-2">Bike Type: {riderDetails.type}</p>
-              <p className="mb-2">Plate Number: {riderDetails.plate_no}</p>
-            </div>
+            
           </div>
 
-          <div>
-            <h1 className="mb-2 text-lg font-semibold">Insurance Information</h1>
-            <div>
-              <p className="mb-2">Insurance Provider: {riderDetails.insurance_provider}</p>
-              {/* <p className="mb-2">Insurance Policy Number: {riderDetails.insurance_policy_no}</p> */}
-            </div>
-          </div>
-        </div>
 
         <div className="bg-[#222222] text-white p-6 t-4">
-          <h1 className="mb-2 text-lg font-semibold">Uploaded Photos</h1>
+        <div className="mb-4">
+              <h1 className="mb-2 text-lg font-semibold">Bike Information</h1>
+              <div>
+                <p className="mb-2">Bike Type: {riderDetails.type}</p>
+                <p className="mb-2">Plate Number: {riderDetails.plate_no}</p>
+              </div>
+            </div>
           <div>
-            <p className="mb-2">ID Photo: </p>
-            {riderDetails.ID_front&&
-              <Image src={idFrontImageUrl} alt="ID Front" width={100} height={100} />
-            }
-            <br />
-            <p className="mb-2">Driver&apos;s License Photo:</p>
-            {riderDetails.license_front&&
-            <Image src={dlFrontImageUrl} alt="DL Front" width={100} height={100} />
-            }
+            {/* <h1 className="mb-2 text-lg font-semibold">Uploaded Photos</h1>
+            <div>
+              <p className="mb-2">ID Photo: </p>
+              {riderDetails.ID_front&&
+                <Image src={idFrontImageUrl} alt="ID Front" width={100} height={100} />
+              }
+              <br />
+              <p className="mb-2">Driver&apos;s License Photo:</p>
+              {riderDetails.license_front&&
+              <Image src={dlFrontImageUrl} alt="DL Front" width={100} height={100} />
+              }
+            </div> */}
           </div>
-        </div>
+            
+          </div>
       </FormWrapper>
       <div className="mt-[1rem] flex gap-[.5rem] justify-end">
           {showBackButton && (

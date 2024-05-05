@@ -1,3 +1,4 @@
+"use client"
 import {useState, useEffect} from 'react'
 import FormInput from '../../Elements/Forms/FormInput'
 import FormWrapper from '../../Elements/Forms/FormWrapper'
@@ -43,7 +44,7 @@ type BikeDetailsProps = BikeDetailsPassedProps & {
 }
 
 // retrieve riderId from local storage
-let riderId = localStorage.getItem("riderId");
+let riderId = window.localStorage.getItem("riderId");
 if (!riderId) {
   console.error("Rider ID not found in local storage");
   riderId = "default"; // Set a default value or error message
@@ -67,6 +68,7 @@ export default function BikeDetails({
 
   const [data, setData] = useState(INITIAL_DATA);
   const [isLoading, setIsLoading] = useState(false);
+  
 
     // check if the state of the forms input is being updated
   useEffect(() => {
@@ -74,16 +76,19 @@ export default function BikeDetails({
   }, [data]);
 
   
-
   function updateData(fields: Partial<BikeDetails>) {
-    setData(prev => {
+    setData((prev) => {
       return { ...prev, ...fields };
     });
-     // Only call updateFields if the rider field is not included in the fields object
-     if (!fields.hasOwnProperty('rider') && fields.rider !== undefined) {
+  
+    // Check if fields contain keys other than 'rider'
+    const otherFieldsPresent = Object.keys(fields).some(key => key !== 'rider');
+  
+    // Call updateFields only if other fields are present
+    if (otherFieldsPresent) {
       updateFields(fields);
-     }
     }
+  }
 
   async function onSubmitHandler(values: BikeDetails) {
     try {
@@ -141,45 +146,46 @@ export default function BikeDetails({
             
           />
        
-          <FormInput
-            label='EV Model'
-            value={data.ev_model}
-            name='ev_model'
-            placeholder='Choose EV bike model name:'
-            type='select'
-            required={false}
-            options={[
-                { value: "AMPERSAND", label: "Ampersand" },
-                { value: "ENZI", label: "Enzi" },
-                { value: "ARC", label: "Arc" },
-                { value: "ROAM", label: "Roam" },
-                { value: "GREEN", label: "Green" },
-            ]}
-            onChange={e => updateData({ ev_model: e.target.value })}
-            disabled={data.type !== "EV"}
-        />
-    
-    
-        <FormInput
-            label='Fuel Model'
-            value={data.fuel_model}
-            name='fuel_model'
-            placeholder='Choose Fuel bike model name:'
-            type='select'
-            required={false}
-            options={[
-                { value: "BOXER", label: "Boxer" },
-                { value: "TVS", label: "Enzi" },
-                { value: "HONDA", label: "Arc" },
-                { value: "HAOJUE", label: "Haojue" },
-                { value: "HERO", label: "Hero" },
-                { value: "CAPTAIN", label: "Captain" },
-                { value: "EVERLAST", label: "Everlast" },
-                { value: "SONLINK", label: "Sonlink" },
-            ]}
-            onChange={e => updateData({ fuel_model: e.target.value })}
-            disabled={data.type !== "FUEL"}
-        />
+       {data.type === "EV" && (
+    <FormInput
+        label='EV Model'
+        value={data.ev_model}
+        name='ev_model'
+        placeholder='Choose EV bike model name:'
+        type='select'
+        required={false}
+        options={[
+            { value: "AMPERSAND", label: "Ampersand" },
+            { value: "ENZI", label: "Enzi" },
+            { value: "ARC", label: "Arc" },
+            { value: "ROAM", label: "Roam" },
+            { value: "GREEN", label: "Green" },
+        ]}
+        onChange={e => updateData({ ev_model: e.target.value })}
+    />
+)}
+
+{data.type === "FUEL" && (
+    <FormInput
+        label='Fuel Model'
+        value={data.fuel_model}
+        name='fuel_model'
+        placeholder='Choose Fuel bike model name:'
+        type='select'
+        required={false}
+        options={[
+            { value: "BOXER", label: "Boxer" },
+            { value: "TVS", label: "Enzi" },
+            { value: "HONDA", label: "Arc" },
+            { value: "HAOJUE", label: "Haojue" },
+            { value: "HERO", label: "Hero" },
+            { value: "CAPTAIN", label: "Captain" },
+            { value: "EVERLAST", label: "Everlast" },
+            { value: "SONLINK", label: "Sonlink" },
+        ]}
+        onChange={e => updateData({ fuel_model: e.target.value })}
+    />
+)}
       
           <FormInput
             label='License Plate Number'

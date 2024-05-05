@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect, useState } from 'react';
 import FormWrapper from '../../Elements/Forms/FormWrapper';
 import FormInput from "@/components/Elements/Forms/FormInput";
@@ -43,7 +44,7 @@ const riderDetailsSchema = object({
 
 export type RiderDetailsInput = TypeOf<typeof riderDetailsSchema>;
 
-let riderId = localStorage.getItem("riderId");
+let riderId = window.localStorage.getItem("riderId");
 if (!riderId) {
   console.error("Rider ID not found in local storage");
   riderId = "default"; // Set a default value or error message
@@ -77,6 +78,7 @@ export default function Upload({ stepsCount, stepNumber, updateFields, next, bac
   const [insuranceImageUrl, setInsuranceImageUrl] = useState<string>('');
 
   function updateData(fields: Partial<RiderDetails>) {
+    console.log("Updated data:", fields);
     setData(prev => {
       return { ...prev, ...fields };
     });
@@ -88,18 +90,30 @@ export default function Upload({ stepsCount, stepNumber, updateFields, next, bac
 
   const handleImageUpload = (imageData: File, imageName: string, 
     setImage: React.Dispatch<React.SetStateAction<File | null>>, 
-    setImageUrl: React.Dispatch<React.SetStateAction<string>>) => {
+    setImageUrl: React.Dispatch<React.SetStateAction<string>>,
+    updateData: Function) => {
+    // console.log("Image data:", imageData);
+    // console.log("Image name:", imageName);
     const renamedFile = new File([imageData], imageName, { type: imageData.type });
     setImage(renamedFile);
-    setImageUrl(URL.createObjectURL(renamedFile));
-    updateData({ [imageName]: renamedFile });
+    // console.log(renamedFile)
+    const imageUrl = URL.createObjectURL(renamedFile);
+    setImageUrl(imageUrl);
+    // console.log("Image URL:", imageUrl);
+    updateData({...updateData, [imageName]: renamedFile });
+    // console.log("Updated data:", { [imageName]: renamedFile });
   };
-
+  // console.log("idFrontImage:", idFrontImage);
+  // console.log("idFrontImageUrl:", idFrontImageUrl);
+  // console.log("idBackImage:", idBackImage);
+  // console.log("idBackImageUrl:", idBackImageUrl);
   useEffect(() => {
+    console.log("useEffect triggered");
+   
     if (idFrontImage) {
       const reader = new FileReader();
       reader.onload = () => {
-        console.log("Data URL of ID Front Image:", reader.result);
+        // console.log("Data URL of ID Front Image:", reader.result);
         setIdFrontImageUrl(reader.result as string);
       };
       reader.readAsDataURL(idFrontImage);
@@ -137,31 +151,36 @@ export default function Upload({ stepsCount, stepNumber, updateFields, next, bac
     }
   }, [idFrontImage, idBackImage, dlFrontImage, dlBackImage, insuranceImage]);
 
-  async function onSubmitHandler(data: any) {
+async function onSubmitHandler (data: any) {
     try {
+      console.log("Form submitted. Data:", data);
       setIsLoading(true);
-      console.log("ID_front:", data.ID_front);
-      console.log("ID_back:", data.ID_back);
-      
+      // console.log("ID_front:", data.ID_front);
+      // console.log("ID_back:", data.ID_back);
+      // console.log("Data:", data)
       // Prepare the FormData for document upload
       const formData = new FormData();
      
       if(data.ID_front){  
         formData.append('ID_front', data.ID_front);
+        console.log('ID_front appended:', data.ID_front);
       }
       if(data.ID_back){
         formData.append('ID_back', data.ID_back);
+        console.log('ID_front appended:', data.ID_back);
       }
       if(data.license_front) {
         formData.append('license_front', data.license_front);
+        console.log('ID_front appended:', data.license_front);
       }
       if(data.license_back){
         formData.append('license_back', data.license_back);
+        console.log('ID_front appended:', data.license_back);
       }
       if(data.insurance){
         formData.append('insurance', data.insurance);
+        console.log('ID_front appended:', data.insurance);
       }
-     
       
       // Upload documents
       const res = await uploadDocuments(formData);
@@ -171,11 +190,12 @@ export default function Upload({ stepsCount, stepNumber, updateFields, next, bac
       }
 
     } catch (error: any) {
-      if(error&&error.error){
-        toast.error(error.error);
-      } else {
-        toast.error('An unknown error occurred!');
-      }
+      // if(error&&error.error){
+      //   toast.error(error.error);
+      // } else {
+      //   toast.error('An unknown error occurred!');
+      // }
+      console.error("Error submitting form:", error);
     } finally {
       setIsLoading(false);
     }
@@ -205,9 +225,9 @@ export default function Upload({ stepsCount, stepNumber, updateFields, next, bac
             {idFrontImage ? (
               <Image src={idFrontImageUrl} alt="ID Front" width={100} height={100} />
             ) : (
-              <ImageUploader name="ID_front" require={true} onImageUpload={(file) => handleImageUpload(file, 'ID_front', setIdFrontImage, setIdFrontImageUrl)} />
+              <ImageUploader name="ID_front" require={true} onImageUpload={(file) => handleImageUpload(file, 'ID_front', setIdFrontImage, setIdFrontImageUrl, updateData)} />
             )}
-            <span className='whitespace-nowrap'><i className='text-[#FB4552]'>*</i> ID front: {data.ID_front?.name}</span>
+            <span className='whitespace-nowrap'><i className='text-[#FB4552]'>*</i> ID_front: {data.ID_front?.name}</span>
             
           </div>
 
@@ -215,16 +235,16 @@ export default function Upload({ stepsCount, stepNumber, updateFields, next, bac
             {idBackImage ? (
               <Image src={idBackImageUrl} alt="ID Back" width={100} height={100} />
             ) : (
-              <ImageUploader name="ID_back" require={true} onImageUpload={(file) => handleImageUpload(file, 'ID_back', setIdBackImage, setIdBackImageUrl)} />
+              <ImageUploader name="ID_back" require={true} onImageUpload={(file) => handleImageUpload(file, 'ID_back', setIdBackImage, setIdBackImageUrl, updateData)} />
             )}
-            <span className='whitespace-nowrap'><i className='text-[#FB4552]'>*</i> ID back</span>
+            <span className='whitespace-nowrap'><i className='text-[#FB4552]'>*</i> ID_back</span>
           </div>
 
           <div className="flex items-center gap-2 bg-transparent border-[#FB4552] border-[1px] min-h-[48px] rounded-lg px-4">
             {dlFrontImage ? (
               <Image src={dlFrontImageUrl} alt="Driving License Front" width={100} height={100} />
             ) : (
-              <ImageUploader name="license_front" onImageUpload={(file) => handleImageUpload(file, "license_front", setDlFrontImage, setDlFrontImageUrl)} />
+              <ImageUploader name="license_front" onImageUpload={(file) => handleImageUpload(file, "license_front", setDlFrontImage, setDlFrontImageUrl, updateData)} />
             )}
             <span className='whitespace-nowrap'>License Front: {data.license_front?.name}</span>
           </div>
@@ -233,7 +253,7 @@ export default function Upload({ stepsCount, stepNumber, updateFields, next, bac
             {dlBackImage ? (
               <Image src={dlBackImageUrl} alt="DL Back" width={100} height={100} />
             ) : (
-              <ImageUploader name="license_back" onImageUpload={(file) => handleImageUpload(file, "license_back", setDlBackImage, setDlBackImageUrl)} />
+              <ImageUploader name="license_back" onImageUpload={(file) => handleImageUpload(file, "license_back", setDlBackImage, setDlBackImageUrl, updateData)} />
             )}
             <span className='whitespace-nowrap'>License Back: {data.license_back?.name}</span>
           </div>
@@ -242,7 +262,7 @@ export default function Upload({ stepsCount, stepNumber, updateFields, next, bac
             {insuranceImage ? (
               <Image src={insuranceImageUrl} alt="Insurance" width={100} height={100} />
             ) : (
-              <ImageUploader name="insurance" require={false} onImageUpload={(file) => handleImageUpload(file, "insurance", setInsuranceImage, setInsuranceImageUrl)} />
+              <ImageUploader name="insurance" require={false} onImageUpload={(file) => handleImageUpload(file, "insurance", setInsuranceImage, setInsuranceImageUrl, updateData)} />
             )}
             <span className='whitespace-nowrap'>Insurance: {data.insurance?.name}</span>
           </div>

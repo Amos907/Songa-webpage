@@ -28,10 +28,10 @@ type FormData = {
   job_type: string;
   gender: string;
   rider: any;
-  ID_front: any;
-  ID_back: any;
-  license_front: any;
-  license_back: any;
+  // ID_front: any;
+  // ID_back: any;
+  // license_front: any;
+  // license_back: any;
   type: string;
   plate_no: string;
   ev_model: string | null;
@@ -51,10 +51,10 @@ const INITIAL_DATA: FormData = {
   job_type: '',
   gender: '',
   rider: '',
-  ID_front: '',
-  ID_back: '',
-  license_front: '',
-  license_back: '',
+  // ID_front: '',
+  // ID_back: '',
+  // license_front: '',
+  // license_back: '',
   type: '',
   plate_no: '',
   ev_model: '',
@@ -67,11 +67,11 @@ const INITIAL_DATA: FormData = {
 export default function RegistrationForm() {
   const [data, setData] = useState(INITIAL_DATA);
   const { currentStepIndex, step, steps, isFirstStep, isLastStep, goTo, next, back } = useMultistepForm([
-    { component: <RiderDetails stepsCount={5} stepNumber={1} next={goToNext} back={goBack} updateFields={updateFields} />, step: { number: 1, label: 'Rider Details' } },
-    { component: <RiderProfile stepsCount={5} stepNumber={2} next={goToNext} back={goBack} updateFields={updateFields} />, step: { number: 2, label: 'Profile' } },
-    { component: <Upload stepsCount={5} stepNumber={3} next={goToNext} back={goBack}  updateFields={updateFields} />, step: { number: 3, label: 'Upload' } },
-    { component: <BikeDetails stepsCount={5} stepNumber={4} next={goToNext} back={goBack} updateFields={updateFields} />, step: { number: 4, label: 'Bike Details' } },
-    { component: <Preview {...data} stepsCount={5} stepNumber={5} next={goToNext} back={goBack} updateFields={updateFields} />, step: { number: 5, label: 'Preview' } },
+    { component: <RiderDetails  stepsCount={4} stepNumber={1} next={goToNext} back={goBack} updateFields={updateFields} />, step: { number: 1, label: 'Rider Details' } },
+    { component: <RiderProfile stepsCount={4} stepNumber={2} next={goToNext} back={goBack} updateFields={updateFields} />, step: { number: 2, label: 'Profile' } },
+    // { component: <Upload stepsCount={5} stepNumber={3} next={goToNext} back={goBack}  updateFields={updateFields} />, step: { number: 3, label: 'Upload' } },
+    { component: <BikeDetails stepsCount={4} stepNumber={3} next={goToNext} back={goBack} updateFields={updateFields} />, step: { number: 3, label: 'Bike Details' } },
+    { component: <Preview {...data} stepsCount={4} stepNumber={4} next={goToNext} back={goBack} updateFields={updateFields} />, step: { number: 4, label: 'Preview' } },
   ]);
 
   const showBackButton = !isFirstStep && currentStepIndex !== 0;

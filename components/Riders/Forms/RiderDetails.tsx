@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect, useState } from 'react';
 import FormWrapper from '../../Elements/Forms/FormWrapper';
 import 'react-phone-number-input/style.css';
@@ -96,7 +97,7 @@ export default function RiderDetails({ stepsCount, stepNumber, updateFields, nex
       updateFields({ phone_no: phoneNumber.formatInternational() })
     } else {
       setPhone('');
-      updateFields({ phone_no: '' })
+      updateFields({ phone_no: ''})
     }
   };
 

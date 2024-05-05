@@ -11,7 +11,7 @@ export default function Home() {
       <Trustees/>
       <AboutUs/>
       <ServicesOffered/>
-      <RiderRegistration />
+      {/* <RiderRegistration /> */}
     </div>
     
 );
