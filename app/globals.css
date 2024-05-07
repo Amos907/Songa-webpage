@@ -39,14 +39,17 @@ body {
 
 input:-webkit-autofill {
   /* Set the background color to transparent */
-  -webkit-box-shadow: 0 0 0 30px transparent inset;
+  /* -webkit-box-shadow: 0 0 0 30px transparent inset; */
+  color: #000 !important;
+  background-color: #fff !important;
+  font-weight: 600;
 }
 
 /* Optional: Override the default autofill styles for text and background color */
-input:-webkit-autofill,
+/* input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus {
   -webkit-text-fill-color: #fff; /* Text color */
-  background-color: transparent; /* Background color */
-}
+  /* background-color: transparent; Background color */
+/* }  */
 
