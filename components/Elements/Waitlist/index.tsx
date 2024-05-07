@@ -75,7 +75,7 @@ const WaitlistPopup: React.FC<WaitListProps> = ({ onClose }) => {
       .then(response => {
         if (response.status === 201) {
           // Handle success, e.g., display a success message
-          alert('Thank you for joining the waitlist!');
+          toast.success('Thank you for joining the waitlist!');
           setFirstName('');
           setLastName('');
           setEmail('');
@@ -86,7 +86,7 @@ const WaitlistPopup: React.FC<WaitListProps> = ({ onClose }) => {
           // onClose();
         } else {
           // Handle other status codes if needed
-          alert('There was an error. Please try again later.');
+          toast.error('There was an error. Please try again later.');
           console.error('Error:', response);
         }
       })
@@ -145,7 +145,7 @@ const WaitlistPopup: React.FC<WaitListProps> = ({ onClose }) => {
         </div>
         <div className='mb-4'>
           <label htmlFor="phoneNumber" className="block font-bold">Phone Number</label>
-          <PhoneInput country={'ke'} name='phone_number' id='phoneNumber' value={phoneNumber} onChange={handlePhoneChange} inputStyle={{width:'100%'}}/>
+          <PhoneInput country={'ke'} inputProps={{name: 'phone', required: true, id: 'phoneNumber'}}  value={phoneNumber} onChange={handlePhoneChange} inputStyle={{width:'100%'}}/>
         </div>
         <div className="form-group mb-4">
           <label htmlFor="email" className="block font-bold">Email</label>
