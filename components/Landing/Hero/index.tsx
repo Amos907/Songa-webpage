@@ -5,6 +5,7 @@ import Link from "next/link";
 import { sans_hebrew } from "@/app/ui/fonts";
 import { HeroButtons } from "@/components/Elements/Buttons/buttons";
 import WaitlistPopup from "@/components/Elements/Waitlist";
+import { Fade } from "react-awesome-reveal";
 
 
 export const Hero = () => {
@@ -37,40 +38,44 @@ export const Hero = () => {
         <div className="w-full pt-20 md:w-1/2 md:flex flex-col md:justify-center md:items-center  ">
         <div className=" w-full">
           <div className="text-white text-center md:text-left px-6 md:px-16 space-y-20 md:space-y-12 ">
-            <div>
-              <p
-                className={`${sans_hebrew.className} tracking-normal text-[#0F9434] font-extrabold text-2xl md:text-4xl md:leading-2 md:tracking-[.25em]`}
-              >
-                A DIGITAL <br/><br/>  RIDER <br /><br/>  EXPERIENCE.
-              </p>
-            </div>
-            <div className="md:space-y-8">
-              <HeroButtons text="JOIN THE WAITLIST" url="/"  onClick={handleGetStarted}/>
-              <div className="w-full flex flex-col items-center md:flex-row md:justify-start md:items-start md:space-x-8">
-                <div>
-                  <Link href="/">
-                    <Image
-                      src="/assets/icons/app-store.png"
-                      alt="Download on Apple Store"
-                      width={150}
-                      height={150}
-                    />
-                  </Link>
-                </div>
-                <div>
-                  <Link href="/">
-                    <Image
-                      src="/assets/icons/play-store.png"
-                      alt="Download on Apple Store"
-                      width={180}
-                      height={180}
-                      className="pt-3"
-                    />
-                  </Link>
-                  </div>
+            <Fade direction="down" triggerOnce={true}>
+              <div>
+                <p
+                  className={`${sans_hebrew.className} tracking-normal text-[#0F9434] font-extrabold text-2xl md:text-4xl md:leading-2 md:tracking-[.25em]`}
+                >
+                  A DIGITAL <br/><br/>  RIDER <br /><br/>  EXPERIENCE.
+                </p>
               </div>
+            </Fade>
+
+            <div className="md:space-y-8">
+              <Fade><HeroButtons text="JOIN THE WAITLIST" url="/"  onClick={handleGetStarted}/></Fade>
+              <Fade direction="up" triggerOnce={true}>
+                <div className="w-full flex flex-col items-center md:flex-row md:justify-start md:items-start md:space-x-8">
+                  <div>
+                    <Link href="/">
+                      <Image
+                        src="/assets/icons/app-store.png"
+                        alt="Download on Apple Store"
+                        width={150}
+                        height={150}
+                      />
+                    </Link>
+                  </div>
+                  <div>
+                    <Link href="/">
+                      <Image
+                        src="/assets/icons/play-store.png"
+                        alt="Download on Apple Store"
+                        width={180}
+                        height={180}
+                        className="pt-3"
+                      />
+                    </Link>
+                    </div>
+                </div>
+              </Fade>
             </div>
-            
           </div>
         </div>
       </div>
@@ -78,6 +83,7 @@ export const Hero = () => {
           {/* Right Side */}
           
           <div className="hidden md:relative md:flex justify-center">
+            {/* <Fade direction="right" triggerOnce={true}> */}
             <div className="relative w-full h-full rounded-md overflow-hidden">
                 <Image
                   src="/assets/images/hero-bg.jpg"
@@ -95,8 +101,9 @@ export const Hero = () => {
                   height={400}
                   className="rounded-full"
                 />
+              </div>
             </div>
-          </div>
+          {/* </Fade> */}
           </div>
 
           {/* mobile view */}

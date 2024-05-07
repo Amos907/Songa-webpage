@@ -1,8 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
+"use client"
 import Image from "next/image";
 import React from "react";
 import { sans_hebrew } from "@/app/ui/fonts";
 import Link from "next/link";
+import { Fade } from "react-awesome-reveal";
 
 interface CardInfo {
   title: string;
@@ -112,12 +114,13 @@ export default function AboutUs() {
                 In the technology of 21 Century , we aim to leverage what we know incorporating AI to improve service delivery.
               </p>
           </div>
-
+          <Fade direction="up" cascade triggerOnce={false} >
           <div className="lg:flex lg:space-x-3 mt-4 mx-3 space-y-3 lg:space-y-0">
             {CardInfo.map<JSX.Element>((data: CardInfo) => (
               <SectionCard key={data.title} cardInfo={data} />
             ))}
           </div>
+          </Fade>
         </div>
       </div>
 
