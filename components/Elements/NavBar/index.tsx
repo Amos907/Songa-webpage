@@ -6,6 +6,7 @@ import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { sans_hebrew } from "@/app/ui/fonts";
 import { usePathname } from "next/navigation";
 import { clsx } from "clsx";
+import { Fade } from "react-awesome-reveal";
 
 const navLinks = [
   {
@@ -46,24 +47,26 @@ export const NavBar = () => {
             </figure>
           </div>
 
-          <div className="hidden md:flex mt-4">
-            <div className="md:px-2 md:text-sm lg:px-4 lg:text-lg flex mx-auto">
-              {navLinks.map((navLink) => (
-                <Link
-                  key={navLink.id}
-                  href={navLink.url}
-                  className={clsx(
-                    "mx-2 lg:mx-12 text-[14px] text-[#020202] font-bold leading-normal py-1",
-                    {
-                      "border-b-4  border-[#A90000]": pathname === navLink.url,
-                    }
-                  )}
-                >
-                  <p className="text-xl font-bold uppercase">{navLink.title}</p>
-                </Link>
-              ))}
+          <Fade direction="left" cascade damping={0.1} triggerOnce={false}>
+            <div className="hidden md:flex mt-4">
+              <div className="md:px-2 md:text-sm lg:px-4 lg:text-lg flex mx-auto">
+                {navLinks.map((navLink) => (
+                  <Link
+                    key={navLink.id}
+                    href={navLink.url}
+                    className={clsx(
+                      "mx-2 lg:mx-12 text-[14px] text-[#020202] font-bold leading-normal py-1",
+                      {
+                        "border-b-4  border-[#A90000]": pathname === navLink.url,
+                      }
+                    )}
+                  >
+                    <p className="text-xl font-bold uppercase">{navLink.title}</p>
+                  </Link>
+                ))}
+              </div>
             </div>
-          </div>
+          </Fade>
           {/* Mobile version */}
           <div
             className="md:hidden flex items-center justify-center space-x-3 mr-4"
