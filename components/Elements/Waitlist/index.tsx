@@ -16,7 +16,6 @@ const WaitlistPopup: React.FC<WaitListProps> = ({ onClose }) => {
     const [town, setTown] = useState('');
     const [county, setCounty] = useState('');
     const [frequency, setFrequency] = useState('');
-    const [showPopup, setShowPopup] = useState(false);
     
     const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFirstName(e.target.value);
@@ -57,7 +56,7 @@ const WaitlistPopup: React.FC<WaitListProps> = ({ onClose }) => {
   const handleJoinWaitlist = () => {
     // Add your logic here to handle joining the waitlist
     if (!firstName || !lastName || !email || !town || !county || !phoneNumber || !frequency) {
-      alert('Please fill in all fields.');
+      toast.error('Please fill in all fields.');
       return;
     }
     // const cleanPhoneNumber = phoneNumber.replace(/\s+/g, '').replace(/\+/g, '');
@@ -91,19 +90,6 @@ const WaitlistPopup: React.FC<WaitListProps> = ({ onClose }) => {
         }
       })
   };
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     if (window.scrollY > 100) {
-  //       setShowPopup(true);
-  //     }
-  //   };
-
-  //   window.addEventListener('scroll', handleScroll);
-
-  //   return () => {
-  //     window.removeEventListener('scroll', handleScroll);
-  //   };
-  // }, []);
 
   return (
     <div className="fixed top-0  w-full h-auto bg-black bg-opacity-50 flex justify-center items-center z-50">
@@ -125,31 +111,31 @@ const WaitlistPopup: React.FC<WaitListProps> = ({ onClose }) => {
         <h2 className='text-lg text-center font-bold mb-4'>Join the Waitlist</h2>
         <div className="form-group mb-4">
           <label htmlFor="firstName" className="block font-bold">First Name</label>
-          <input type="text" name='first_name' id="firstName" placeholder='Enter your first name:' value={firstName} onChange={handleFirstNameChange} className="w-full text-black px-3 py-2 border rounded-md" />
+          <input type="text" name='first_name' id="firstName" placeholder='Enter your first name:' value={firstName} onChange={handleFirstNameChange} required className="w-full text-black px-3 py-2 border rounded-md" />
         </div>
         <div className="form-group mb-4">
           <label htmlFor="lastName" className="block font-bold">Last Name</label>
-          <input type="text" name='last_name' id="lastName" placeholder='Enter your last name:' value={lastName} onChange={handleLastNameChange} className="w-full text-black px-3 py-2 border rounded-md" />
+          <input type="text" name='last_name' id="lastName" placeholder='Enter your last name:' value={lastName} onChange={handleLastNameChange} required className="w-full text-black px-3 py-2 border rounded-md" />
         </div>
         <div className="form-group mb-4">
           <label htmlFor="town" className="block font-bold">Town of Residency:</label>
-          <input type="text"  name="town_of_residence" id='town' placeholder='Enter your town of residency:' value={town} onChange={handleTownChange} className="w-full text-black px-3 py-2 border rounded-md" />
+          <input type="text"  name="town_of_residence" id='town' placeholder='Enter your town of residency:' value={town} onChange={handleTownChange} required className="w-full text-black px-3 py-2 border rounded-md" />
         </div>
         <div className="form-group mb-4">
           <label htmlFor="county" className="block font-bold">County:</label>
-          <input type="text" name='county' id="county" placeholder='Enter your county of residency:' value={county} onChange={handleCountyChange} className="w-full text-black px-3 py-2 border rounded-md" />
+          <input type="text" name='county' id="county" placeholder='Enter your county of residency:' value={county} onChange={handleCountyChange} required className="w-full text-black px-3 py-2 border rounded-md" />
         </div>
         <div className="form-group mb-4">
           <label htmlFor="frequency" className="block font-bold">How many times do you use boda boda services in a day?</label>
-          <input type="number" name='frequency' id="frequency" placeholder='0' value={frequency} onChange={handleFrequencyChange} className="w-full text-black px-3 py-2 border rounded-md" />
+          <input type="number" name='frequency' id="frequency" placeholder='0' value={frequency} onChange={handleFrequencyChange} required className="w-full text-black px-3 py-2 border rounded-md" />
         </div>
         <div className='mb-4'>
           <label htmlFor="phoneNumber" className="block font-bold">Phone Number</label>
-          <PhoneInput country={'ke'} inputProps={{name: 'phone', required: true, id: 'phoneNumber'}}  value={phoneNumber} onChange={handlePhoneChange} inputStyle={{width:'100%'}}/>
+          <PhoneInput country={'ke'} onlyCountries={['ke']} countryCodeEditable={false}	 inputProps={{name: 'phone', required: true, id: 'phoneNumber'}} value={phoneNumber} onChange={handlePhoneChange} inputStyle={{width:'100%'}}/>
         </div>
         <div className="form-group mb-4">
           <label htmlFor="email" className="block font-bold">Email</label>
-          <input type="email" name='email' id="email" placeholder='Enter your email:' value={email} onChange={handleEmailChange} className="w-full text-black px-3 py-2 border rounded-md" />
+          <input type="email" name='email' id="email" placeholder='Enter your email:' value={email} onChange={handleEmailChange} required className="w-full text-black px-3 py-2 border rounded-md" />
         </div>
         <div className='flex justify-center'>
             <button type='submit' onClick={handleJoinWaitlist} className="bg-[#0F9434] text-white text-lg px-4 py-2 rounded-md">SUBMIT</button>
