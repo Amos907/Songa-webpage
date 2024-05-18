@@ -69,7 +69,7 @@ const WaitlistPopup: React.FC<WaitListProps> = ({ onClose }) => {
         county,
         frequency: parseInt(frequency)
       };
-      const endpoint = 'http://songaai.pythonanywhere.com/api/v1/wailtist/'
+      const endpoint = 'https://songaai.pythonanywhere.com/api/v1/wailtist/'
       axios.post(endpoint, data)
       .then(response => {
         if (response.status === 201) {
